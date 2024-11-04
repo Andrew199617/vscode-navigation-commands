@@ -1,9 +1,14 @@
 {
   "name": "vscode-navigation-commands",
   "displayName": "Keyboard Navigation Commands",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "icon": "LGDLogo.png",
   "publisher": "learn-game-development",
   "description": "Commands that you can bind to a keyboard shortcut to help with navigating a file. For example, moving to the next or previous Paragraph, word, WORD, line, character, or more.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Andrew199617/vscode-navigation-commands"
+  },
   "main": "index.js",
   "scripts": {
     "test": "jest --config ./tests/jest.config.js"
