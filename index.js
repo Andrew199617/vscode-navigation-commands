@@ -4,6 +4,9 @@ const GoToLastParens = require('./src/Commands/GoToLastParens.js');
 const GoToNextParens = require('./src/Commands/GoToNextParens.js');
 const HighlightInsideNextParens = require('./src/Commands/HighlightInsideNextParens.js');
 const HighlightInsideLastParens = require('./src/Commands/HighlightInsideLastParens.js');
+const GoToNextMethod = require('./src/Commands/GoToNextMethod.js');
+const GoToLastMethod = require('./src/Commands/GoToLastMethod.js');
+const GoToAssignment = require('./src/Commands/GoToAssignment.js');
 
 
 function activate(context) {
@@ -15,6 +18,9 @@ function activate(context) {
     const highlightInsideNextParensCommand = HighlightInsideNextParens.create().createCommand();
     const highlightInsideLastParensCommand = HighlightInsideLastParens.create().createCommand();
     const goToAssignmentCommand = GoToAssignment.create().createCommand();
+    const goToNextMethodCommand = GoToNextMethod.create().createCommand();
+    const goToLastMethodCommand = GoToLastMethod.create().createCommand();
+
 
     context.subscriptions.push(goLastParagraphCommand);
     context.subscriptions.push(goNextParagraphCommand);
@@ -23,6 +29,8 @@ function activate(context) {
     context.subscriptions.push(highlightInsideLastParensCommand);
     context.subscriptions.push(highlightInsideNextParensCommand);
     context.subscriptions.push(goToAssignmentCommand);
+    context.subscriptions.push(goToNextMethodCommand);
+    context.subscriptions.push(goToLastMethodCommand);
 }
 
 // this method is called when your extension is deactivated

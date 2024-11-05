@@ -38,8 +38,16 @@ To assign the commands provided by this extension to keyboard shortcuts, follow 
 - **Description:** Highlights the inside of the last parenthesis.
 
 ### Go to Assignment
-- **Command ID:** `lgd.GoToAssignment`
+- **Command ID:** `lgd.goToAssignment`
 - **Description:** Moves the cursor to the beginning of an assignment, searching for the first letter after an equals sign.
+
+### Go to Assignment
+- **Command ID:** `lgd.goToNextMethod`
+- **Description:** Move the cursor to next method in class, object, or module.
+
+### Go to Assignment
+- **Command ID:** `lgd.gotToLastMethod`
+- **Description:** Move the cursor to next method in class, object, or module.
 
 ## Other Extensions by Learn Game Development
 

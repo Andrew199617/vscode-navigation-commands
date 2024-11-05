@@ -35,7 +35,7 @@ const BaseCommand = {
    * @returns {vscode.Disposable}
    */
   createCommand() {
-    return vscode.commands.registerCommand(this.commandName, this.executeCommand)
+    return vscode.commands.registerCommand(this.commandName, this.executeCommand, this)
   },
 
   /**
