@@ -41,11 +41,11 @@ To assign the commands provided by this extension to keyboard shortcuts, follow 
 - **Command ID:** `lgd.goToAssignment`
 - **Description:** Moves the cursor to the beginning of an assignment, searching for the first letter after an equals sign.
 
-### Go to Assignment
+### Go to Next Method
 - **Command ID:** `lgd.goToNextMethod`
 - **Description:** Move the cursor to next method in class, object, or module.
 
-### Go to Assignment
+### Go to Last Method
 - **Command ID:** `lgd.gotToLastMethod`
 - **Description:** Move the cursor to next method in class, object, or module.
 
