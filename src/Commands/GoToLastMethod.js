@@ -33,6 +33,12 @@ const GoToLastMethod = {
         return;
       }
     }
+
+    for (let i = lines.length; i > currentLine + 1; --i) {
+      if (this.getMethod(lines[i], i)) {
+        return;
+      }
+    }
   },
 };
 

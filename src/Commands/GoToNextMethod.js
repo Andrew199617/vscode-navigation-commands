@@ -14,7 +14,13 @@ const GoToNextMethod = {
    */
   create(commandName = "lgd.goToNextMethod", title = "Go To Next Method") {
     const goToNextMethod = Oloo.assign(BaseCommand.create(commandName, title), GoToNextMethod);
+
+    /**
+     * The tab size of the currently opened file in VS Code.
+     * @type {number}
+     */
     goToNextMethod.tabSize = this.getTabSize();
+
     return goToNextMethod;
   },
 
@@ -60,6 +66,12 @@ const GoToNextMethod = {
         return;
       }
     }
+
+    for (let i = 0; i < currentLine - 1; i++) {
+      if (this.getMethod(lines[i], i)) {
+        return;
+      }
+    }
   },
 
   /**
@@ -69,9 +81,9 @@ const GoToNextMethod = {
    * @returns {boolean} Returns true if a method was found and navigation was successful, otherwise false.
    */
   getMethod(line, i) {
-    let tabIndented = new RegExp(`^ {${this.tabSize}}[^\s ]{1}`, 'm').test(line)
-      || new RegExp(`^\t{1}[^\s ]{1}`, 'm').test(line);
-    const notIndented = /^[^\s ]{1}/m.test(line);
+    let tabIndented = new RegExp(`^ {${this.tabSize}}[\\w\\$]{1}`, 'm').test(line)
+      || new RegExp(`^\t{1}[\\w\\$]{1}`, 'm').test(line);
+    const notIndented = /^[\\w\\$]{1}/m.test(line);
 
     if (!tabIndented && !notIndented) {
       return false;
@@ -79,9 +91,9 @@ const GoToNextMethod = {
 
     const trimmedLine = line.trim();
     if (
-      (/^function\s+\w+\s*\(.+?{/m.test(trimmedLine) ||
-        /^\w+\s*:\s*function\s*\(.+?{/m.test(trimmedLine) ||
-        /^\w+\s*\(.+?{/m.test(trimmedLine)) &&
+      (/^function\s+\w+\s*\(.+?{/ms.test(trimmedLine) ||
+        /^\w+\s*:\s*function\s*\(.+?{/ms.test(trimmedLine) ||
+        /^(\w+|async \w+|get \w+|set \w+)\s*\(.+?{/ms.test(trimmedLine)) &&
       // does not match if, while, for, switch, etc.
       !/^if/m.test(trimmedLine) &&
       !/^while/m.test(trimmedLine) &&
