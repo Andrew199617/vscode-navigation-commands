@@ -1,7 +1,7 @@
 {
   "name": "vscode-navigation-commands",
   "displayName": "Keyboard Navigation Commands",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "icon": "LGDLogo.png",
   "publisher": "learn-game-development",
   "description": "Commands that you can bind to a keyboard shortcut to help with navigating a file. For example, moving to the next or previous Paragraph, word, WORD, line, character, or more.",
@@ -54,7 +54,7 @@
         "category": "LGD"
       },
       {
-        "command": "lgd.GoToAssignment",
+        "command": "lgd.goToAssignment",
         "title": "Go to the begging of an assignment. Searches for first letter after an equals sign.",
         "category": "LGD"
       },
@@ -86,6 +86,16 @@
       {
         "command": "lgd.highlightInsideLastBracket",
         "title": "Highlight inside last bracket. Select text between { and }",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.goToNextMethod",
+        "title": "Go to next method in class, object, or module.",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.goToLastMethod",
+        "title": "Go to last method in class, object, or module.",
         "category": "LGD"
       }
     ]

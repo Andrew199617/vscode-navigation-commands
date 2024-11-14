@@ -37,9 +37,41 @@ To assign the commands provided by this extension to keyboard shortcuts, follow 
 - **Command ID:** `lgd.highlightInsideLastParenthesis`
 - **Description:** Highlights the inside of the last parenthesis.
 
+### Go to Next Bracket
+- **Command ID:** `lgd.goToNextBracket`
+- **Description:** Moves the cursor to the next closing bracket. Places the cursor behind the `}`.
+
+### Go to Last Bracket
+- **Command ID:** `lgd.goToLastBracket`
+- **Description:** Moves the cursor to the last closing bracket. Places the cursor behind the `}`.
+
+### Move to Next Open Bracket
+- **Command ID:** `lgd.moveToNextOpenBracket`
+- **Description:** Moves the cursor to the next opening bracket. Places the cursor after the `{`.
+
+### Move to Last Open Bracket
+- **Command ID:** `lgd.moveToLastOpenBracket`
+- **Description:** Moves the cursor to the last opening bracket. Places the cursor after the `{`.
+
+### Highlight Inside Next Bracket
+- **Command ID:** `lgd.highlightInsideNextBracket`
+- **Description:** Highlights the text inside the next bracket. Selects text between `{` and `}`.
+
+### Highlight Inside Last Bracket
+- **Command ID:** `lgd.highlightInsideLastBracket`
+- **Description:** Highlights the text inside the last bracket. Selects text between `{` and `}`.
+
 ### Go to Assignment
-- **Command ID:** `lgd.GoToAssignment`
+- **Command ID:** `lgd.goToAssignment`
 - **Description:** Moves the cursor to the beginning of an assignment, searching for the first letter after an equals sign.
+
+### Go to Next Method
+- **Command ID:** `lgd.goToNextMethod`
+- **Description:** Move the cursor to next method in class, object, or module.
+
+### Go to Last Method
+- **Command ID:** `lgd.gotToLastMethod`
+- **Description:** Move the cursor to next method in class, object, or module.
 
 ## Other Extensions by Learn Game Development
 

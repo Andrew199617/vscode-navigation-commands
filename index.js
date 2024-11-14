@@ -11,9 +11,12 @@ const MoveToNextOpenBracket = require('./src/Commands/MoveToNextOpenBracket.js')
 const MoveToLastOpenBracket = require('./src/Commands/MoveToLastOpenBracket.js');
 const HighlightInsideNextBracket = require('./src/Commands/HighlightInsideNextBracket.js');
 const HighlightInsideLastBracket = require('./src/Commands/HighlightInsideLastBracket.js');
+const GoToNextMethod = require('./src/Commands/GoToNextMethod.js');
+const GoToLastMethod = require('./src/Commands/GoToLastMethod.js');
+const GoToAssignment = require('./src/Commands/GoToAssignment.js');
+
 
 function activate(context) {
-
     const goNextParagraphCommand = GoToNextParagraph.create().createCommand();
     const goLastParagraphCommand = GoToLastParagraph.create().createCommand();
     const goToLastParensCommand = GoToLastParens.create().createCommand();
@@ -27,6 +30,9 @@ function activate(context) {
     const moveToLastOpenBracketCommand = MoveToLastOpenBracket.create().createCommand();
     const highlightInsideNextBracketCommand = HighlightInsideNextBracket.create().createCommand();
     const highlightInsideLastBracketCommand = HighlightInsideLastBracket.create().createCommand();
+    const goToNextMethodCommand = GoToNextMethod.create().createCommand();
+    const goToLastMethodCommand = GoToLastMethod.create().createCommand();
+
 
     context.subscriptions.push(goLastParagraphCommand);
     context.subscriptions.push(goNextParagraphCommand);
@@ -41,6 +47,8 @@ function activate(context) {
     context.subscriptions.push(moveToLastOpenBracketCommand);
     context.subscriptions.push(highlightInsideNextBracketCommand);
     context.subscriptions.push(highlightInsideLastBracketCommand);
+    context.subscriptions.push(goToNextMethodCommand);
+    context.subscriptions.push(goToLastMethodCommand);
 }
 
 // this method is called when your extension is deactivated
