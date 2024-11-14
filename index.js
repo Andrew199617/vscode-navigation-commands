@@ -5,7 +5,12 @@ const GoToNextParens = require('./src/Commands/GoToNextParens.js');
 const HighlightInsideNextParens = require('./src/Commands/HighlightInsideNextParens.js');
 const HighlightInsideLastParens = require('./src/Commands/HighlightInsideLastParens.js');
 const GoToAssignment = require('./src/Commands/GoToAssignment.js');
-
+const MoveToNextBracket = require('./src/Commands/MoveToNextBracket.js');
+const MoveToLastBracket = require('./src/Commands/MoveToLastBracket.js');
+const MoveToNextOpenBracket = require('./src/Commands/MoveToNextOpenBracket.js');
+const MoveToLastOpenBracket = require('./src/Commands/MoveToLastOpenBracket.js');
+const HighlightInsideNextBracket = require('./src/Commands/HighlightInsideNextBracket.js');
+const HighlightInsideLastBracket = require('./src/Commands/HighlightInsideLastBracket.js');
 
 function activate(context) {
 
@@ -16,6 +21,12 @@ function activate(context) {
     const highlightInsideNextParensCommand = HighlightInsideNextParens.create().createCommand();
     const highlightInsideLastParensCommand = HighlightInsideLastParens.create().createCommand();
     const goToAssignmentCommand = GoToAssignment.create().createCommand();
+    const moveToNextBracketCommand = MoveToNextBracket.create().createCommand();
+    const moveToLastBracketCommand = MoveToLastBracket.create().createCommand();
+    const moveToNextOpenBracketCommand = MoveToNextOpenBracket.create().createCommand();
+    const moveToLastOpenBracketCommand = MoveToLastOpenBracket.create().createCommand();
+    const highlightInsideNextBracketCommand = HighlightInsideNextBracket.create().createCommand();
+    const highlightInsideLastBracketCommand = HighlightInsideLastBracket.create().createCommand();
 
     context.subscriptions.push(goLastParagraphCommand);
     context.subscriptions.push(goNextParagraphCommand);
@@ -24,6 +35,12 @@ function activate(context) {
     context.subscriptions.push(highlightInsideLastParensCommand);
     context.subscriptions.push(highlightInsideNextParensCommand);
     context.subscriptions.push(goToAssignmentCommand);
+    context.subscriptions.push(moveToNextBracketCommand);
+    context.subscriptions.push(moveToLastBracketCommand);
+    context.subscriptions.push(moveToNextOpenBracketCommand);
+    context.subscriptions.push(moveToLastOpenBracketCommand);
+    context.subscriptions.push(highlightInsideNextBracketCommand);
+    context.subscriptions.push(highlightInsideLastBracketCommand);
 }
 
 // this method is called when your extension is deactivated
