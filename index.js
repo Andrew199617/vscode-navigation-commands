@@ -4,7 +4,6 @@ const GoToLastParens = require('./src/Commands/GoToLastParens.js');
 const GoToNextParens = require('./src/Commands/GoToNextParens.js');
 const HighlightInsideNextParens = require('./src/Commands/HighlightInsideNextParens.js');
 const HighlightInsideLastParens = require('./src/Commands/HighlightInsideLastParens.js');
-const GoToAssignment = require('./src/Commands/GoToAssignment.js');
 const MoveToNextBracket = require('./src/Commands/MoveToNextBracket.js');
 const MoveToLastBracket = require('./src/Commands/MoveToLastBracket.js');
 const MoveToNextOpenBracket = require('./src/Commands/MoveToNextOpenBracket.js');
