@@ -19,10 +19,10 @@ const GoToNextMethod = require('./src/Commands/GoToNextMethod.js');
 const GoToLastMethod = require('./src/Commands/GoToLastMethod.js');
 const GoToAssignment = require('./src/Commands/GoToAssignment.js');
 
-const MoveToNextStringChar = require('./src/Commands/MoveToNextStringChar.js');
-const MoveToLastStringChar = require('./src/Commands/MoveToLastStringChar.js');
-const HighlightInsideNextStringChar = require('./src/Commands/HighlightInsideNextStringChar.js');
-const HighlightInsideLastStringChar = require('./src/Commands/HighlightInsideLastStringChar.js');
+const MoveToNextStringChar = require('./src/Commands/Strings/MoveToNextStringChar.js');
+const MoveToLastStringChar = require('./src/Commands/Strings/MoveToLastStringChar.js');
+const HighlightInsideNextStringChar = require('./src/Commands/Strings/HighlightInsideNextStringChar.js');
+const HighlightInsideLastStringChar = require('./src/Commands/Strings/HighlightInsideLastStringChar.js');
 
 function activate(context) {
     const goNextParagraphCommand = GoToNextParagraph.create().createCommand();

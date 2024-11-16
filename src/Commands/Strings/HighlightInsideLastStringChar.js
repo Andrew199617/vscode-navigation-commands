@@ -1,7 +1,7 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("./BaseCommand");
+const BaseCommand = require("../BaseCommand");
 const vscode = require('vscode');
-const MoveToLastStringChar = require("./MoveToLastStringChar.js");
+const MoveToLastStringChar = require("../MoveToLastStringChar.js");
 
 /**
  * @description Command to highlight the inside of the last string character.
