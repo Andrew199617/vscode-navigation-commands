@@ -1,21 +1,21 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("./BaseCommand");
+const BaseCommand = require("../BaseCommand");
 const vscode = require('vscode');
-const MoveToLastOpenBracket = require("./MoveToLastOpenBracket.js");
+const MoveToNextOpenBracket = require("./MoveToNextOpenBracket.js");
 
 /**
- * @description Command to highlight the inside of the last opening bracket.
- * @type {HighlightInsideLastBracketType}
+ * @description Command to highlight the inside of the next opening bracket.
+ * @type {HighlightInsideNextBracketType}
  * @extends {BaseCommandType}
  */
-const HighlightInsideLastBracket = {
+const HighlightInsideNextBracket = {
   /**
-   * @description Initialize an instance of HighlightInsideLastBracket.
-   * @returns {HighlightInsideLastBracketType}
+   * @description Initialize an instance of HighlightInsideNextBracket.
+   * @returns {HighlightInsideNextBracketType}
    */
   create() {
-    const highlightInsideLastBracket = Oloo.assign(BaseCommand.create("lgd.highlightInsideLastBracket", "Highlight Inside Last Bracket"), HighlightInsideLastBracket);
-    return highlightInsideLastBracket;
+    const highlightInsideNextBracket = Oloo.assign(BaseCommand.create("lgd.highlightInsideNextBracket", "Highlight Inside Next Bracket"), HighlightInsideNextBracket);
+    return highlightInsideNextBracket;
   },
 
   async executeCommand() {
@@ -27,7 +27,7 @@ const HighlightInsideLastBracket = {
     const document = editor.document;
     const selection = editor.selection;
     const position = selection.isEmpty ? selection.active : selection.start;
-    let openBracketPosition = MoveToLastOpenBracket.findLastOpenBracket(document, position);
+    let openBracketPosition = MoveToNextOpenBracket.findNextOpenBracket(document, position);
 
     if (openBracketPosition) {
       let bracketCount = 1;
@@ -54,4 +54,4 @@ const HighlightInsideLastBracket = {
   }
 };
 
-module.exports = HighlightInsideLastBracket;
+module.exports = HighlightInsideNextBracket;

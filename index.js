@@ -1,42 +1,42 @@
 const GoToNextParagraph = require('./src/Commands/GoToNextParagraph.js');
 const GoToLastParagraph = require('./src/Commands/GoToLastParagraph.js');
-const GoToLastParens = require('./src/Commands/GoToLastParens.js');
-const GoToNextParens = require('./src/Commands/GoToNextParens.js');
-const HighlightInsideNextParens = require('./src/Commands/HighlightInsideNextParens.js');
-const HighlightInsideLastParens = require('./src/Commands/HighlightInsideLastParens.js');
-const MoveToNextBracket = require('./src/Commands/MoveToNextBracket.js');
-const MoveToLastBracket = require('./src/Commands/MoveToLastBracket.js');
-const MoveToNextOpenBracket = require('./src/Commands/MoveToNextOpenBracket.js');
-const MoveToLastOpenBracket = require('./src/Commands/MoveToLastOpenBracket.js');
-const HighlightInsideNextBracket = require('./src/Commands/HighlightInsideNextBracket.js');
-const HighlightInsideLastBracket = require('./src/Commands/HighlightInsideLastBracket.js');
+const HighlightInsideNextParens = require('./src/Commands/Parenthesis/HighlightInsideNextParens.js');
+const HighlightInsideLastParens = require('./src/Commands/Parenthesis/HighlightInsideLastParens.js');
+const MoveToNextBracket = require('./src/Commands/Brackets/MoveToNextBracket.js');
+const MoveToLastBracket = require('./src/Commands/Brackets/MoveToLastBracket.js');
+const MoveToNextOpenBracket = require('./src/Commands/Brackets/MoveToNextOpenBracket.js');
+const MoveToLastOpenBracket = require('./src/Commands/Brackets/MoveToLastOpenBracket.js');
+const HighlightInsideNextBracket = require('./src/Commands/Brackets/HighlightInsideNextBracket.js');
+const HighlightInsideLastBracket = require('./src/Commands/Brackets/HighlightInsideLastBracket.js');
 const GoToNextMethod = require('./src/Commands/GoToNextMethod.js');
 const GoToLastMethod = require('./src/Commands/GoToLastMethod.js');
 const GoToAssignment = require('./src/Commands/GoToAssignment.js');
-
+const MoveToNextOpenParens = require('./src/Commands/Parenthesis/MoveToNextOpenParens.js');
+const MoveToLastOpenParens = require('./src/Commands/Parenthesis/MoveToLastOpenParens.js');
 
 function activate(context) {
     const goNextParagraphCommand = GoToNextParagraph.create().createCommand();
     const goLastParagraphCommand = GoToLastParagraph.create().createCommand();
-    const goToLastParensCommand = GoToLastParens.create().createCommand();
-    const goToNextParensCommand = GoToNextParens.create().createCommand();
+
     const highlightInsideNextParensCommand = HighlightInsideNextParens.create().createCommand();
     const highlightInsideLastParensCommand = HighlightInsideLastParens.create().createCommand();
+    const moveToNextOpenParensCommand = MoveToNextOpenParens.create().createCommand();
+    const moveToLastOpenParensCommand = MoveToLastOpenParens.create().createCommand();
+
     const goToAssignmentCommand = GoToAssignment.create().createCommand();
+    
     const moveToNextBracketCommand = MoveToNextBracket.create().createCommand();
     const moveToLastBracketCommand = MoveToLastBracket.create().createCommand();
     const moveToNextOpenBracketCommand = MoveToNextOpenBracket.create().createCommand();
     const moveToLastOpenBracketCommand = MoveToLastOpenBracket.create().createCommand();
     const highlightInsideNextBracketCommand = HighlightInsideNextBracket.create().createCommand();
     const highlightInsideLastBracketCommand = HighlightInsideLastBracket.create().createCommand();
+
     const goToNextMethodCommand = GoToNextMethod.create().createCommand();
     const goToLastMethodCommand = GoToLastMethod.create().createCommand();
 
-
     context.subscriptions.push(goLastParagraphCommand);
     context.subscriptions.push(goNextParagraphCommand);
-    context.subscriptions.push(goToLastParensCommand);
-    context.subscriptions.push(goToNextParensCommand);
     context.subscriptions.push(highlightInsideLastParensCommand);
     context.subscriptions.push(highlightInsideNextParensCommand);
     context.subscriptions.push(goToAssignmentCommand);
@@ -48,13 +48,14 @@ function activate(context) {
     context.subscriptions.push(highlightInsideLastBracketCommand);
     context.subscriptions.push(goToNextMethodCommand);
     context.subscriptions.push(goToLastMethodCommand);
+    context.subscriptions.push(moveToNextOpenParensCommand);
+    context.subscriptions.push(moveToLastOpenParensCommand);
 }
 
 // this method is called when your extension is deactivated
 function deactivate() {
 
 }
-
 
 module.exports = {
     activate,
