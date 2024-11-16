@@ -28,8 +28,8 @@ const MoveToNextStringChar = {
 
     const document = editor.document;
     const position = editor.selection.active;
-    let stringCharPosition = MoveToNextStringChar.findNextStringChar(document, position);
-
+    
+    const { stringCharPosition } = MoveToNextStringChar.findNextStringChar(document, position);
     if (stringCharPosition) {
       editor.selection = new vscode.Selection(stringCharPosition, stringCharPosition);
       editor.revealRange(new vscode.Range(stringCharPosition, stringCharPosition));
@@ -51,7 +51,7 @@ const MoveToNextStringChar = {
 
       for (let i = searchStart; i < textLine.length; i++) {
         if (chars[textLine.charCodeAt(i)]) {
-          return new vscode.Position(line, i + 1);
+          return { stringCharPosition: new vscode.Position(line, i + 1), openingChar: textLine[i] };
         }
       }
     }

@@ -29,35 +29,25 @@ const HighlightInsideNextStringChar = {
 
     const document = editor.document;
     const position = editor.selection.active;
-    let stringCharPosition = MoveToNextStringChar.findNextStringChar(document, position);
 
-    if (stringCharPosition) {
-      const openingChar = document.getText(new vscode.Range(stringCharPosition, stringCharPosition.translate(0, 1)));
-      if (!['"', "'", '`'].includes(openingChar)) {
-        return;
-      }
-
-      let closingCharPosition = null;
-      const lineCount = document.lineCount;
-      for (let line = stringCharPosition.line; line < lineCount; line++) {
-        const textLine = document.lineAt(line).text;
-        const searchStart = line === stringCharPosition.line ? stringCharPosition.character + 1 : 0;
-        const index = textLine.indexOf(openingChar, searchStart);
-        if (index !== -1) {
-          closingCharPosition = new vscode.Position(line, index);
-          break;
-        }
-      }
-
-      if (closingCharPosition) {
-        const range = new vscode.Range(
-          new vscode.Position(stringCharPosition.line, stringCharPosition.character + 1),
-          closingCharPosition
-        );
-        editor.selection = new vscode.Selection(range.start, range.end);
-        editor.revealRange(range);
-      }
+    const { stringCharPosition, openingChar } = MoveToNextStringChar.findNextStringChar(document, position);
+    if (!stringCharPosition) {
+      return;
     }
+
+    let closingCharPosition = this.findNextChar(document, stringCharPosition, openingChar);
+    if (!closingCharPosition) {
+      return;
+    }
+
+    const range = new vscode.Range(
+      stringCharPosition,
+      closingCharPosition
+    );
+    editor.selection = new vscode.Selection(range.start, range.end);
+    editor.revealRange(range);
+  
+  
   }
 };
 

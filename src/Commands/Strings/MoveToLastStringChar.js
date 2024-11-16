@@ -28,7 +28,7 @@ const MoveToLastStringChar = {
 
     const document = editor.document;
     const position = editor.selection.active;
-    let stringCharPosition = MoveToLastStringChar.findLastStringChar(document, position);
+    const { stringCharPosition } = MoveToLastStringChar.findLastStringChar(document, position);
 
     if (stringCharPosition) {
       editor.selection = new vscode.Selection(stringCharPosition, stringCharPosition);
@@ -49,9 +49,9 @@ const MoveToLastStringChar = {
       const textLine = document.lineAt(line).text;
       const searchEnd = line === position.line ? position.character : textLine.length;
 
-      for (let i = searchEnd - 1; i >= 0; i--) {
+      for (let i = searchEnd - 2; i >= 0; i--) {
         if (chars[textLine.charCodeAt(i)]) {
-          return new vscode.Position(line, i);
+          return { stringCharPosition: new vscode.Position(line, i + 1), openingChar: textLine[i] };
         }
       }
     }
