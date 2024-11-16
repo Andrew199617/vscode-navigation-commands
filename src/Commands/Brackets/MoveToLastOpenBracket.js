@@ -1,6 +1,6 @@
 
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("./BaseCommand");
+const BaseCommand = require("../BaseCommand");
 const vscode = require('vscode');
 
 /**

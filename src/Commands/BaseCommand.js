@@ -43,7 +43,60 @@ const BaseCommand = {
    */
   executeCommand() {
     throw new Error('Did not implement!');
-  }
+  },
+
+  /**
+   * @static
+   * @description Helper function to get the next position of a char.
+   * @param {vscode.TextDocument} document
+   * @param {vscode.Position} position
+   * @param {string} char The char to find.
+   * @returns {vscode.Position|null}
+   */
+  findNextChar(document, position, char) {
+    let closeBracketIndex = textLine.indexOf(char, position.character + 1);
+    if (closeBracketIndex !== -1) {
+      return new vscode.Position(position.line, closeBracketIndex);
+    }    
+
+    for (let line = position.line + 1; line < document.lineCount; line++) {
+      const textLine = document.lineAt(line).text;
+      closeBracketIndex = textLine.indexOf(char, 0);
+
+      if (closeBracketIndex !== -1) {
+        return new vscode.Position(line, closeBracketIndex);
+      }
+    }
+
+    return null;
+  },
+
+  /**
+   * @static
+   * @description Helper function to get the previous position of a char.
+   * @param {vscode.TextDocument} document
+   * @param {vscode.Position} position
+   * @param {string} char The char to find.
+   * @returns {vscode.Position|null}
+   */
+  findPreviousChar(document, position, char) {
+    if(position.character - 1 > 0) {
+      const closeBracketIndex = textLine.lastIndexOf(char, position.character - 1);
+      if (closeBracketIndex !== -1) {
+        return new vscode.Position(position.line, closeBracketIndex);
+      }
+    }
+    
+    for (let line = position.line - 1; line >= 0; line--) {
+      const textLine = document.lineAt(line).text;
+      const closeBracketIndex = textLine.lastIndexOf(char, textLine.length);
+
+      if (closeBracketIndex !== -1) {
+        return new vscode.Position(line, closeBracketIndex);
+      }
+    }
+
+    return null;
 };
 
 module.exports = BaseCommand;
