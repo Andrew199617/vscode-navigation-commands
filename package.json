@@ -97,6 +97,26 @@
         "command": "lgd.goToLastMethod",
         "title": "Go to last method in class, object, or module.",
         "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToNextStringChar",
+        "title": "Move To Next String Character",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToLastStringChar",
+        "title": "Move To Last String Character",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.highlightInsideNextStringChar",
+        "title": "Highlight Inside Next String Character",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.highlightInsideLastStringChar",
+        "title": "Highlight Inside Last String Character",
+        "category": "LGD"
       }
     ]
   },
@@ -117,7 +137,10 @@
     "Go to next WORD",
     "Go to last WORD",
     "Go to next line",
-    "Go to last line"
+    "Go to last line",
+    "Go to last string character",
+    "Highlight inside next string character",
+    "Highlight inside last string character"
   ],
   "author": "Learn Game Development",
   "license": "MIT",

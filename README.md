@@ -61,6 +61,22 @@ To assign the commands provided by this extension to keyboard shortcuts, follow 
 - **Command ID:** `lgd.highlightInsideLastBracket`
 - **Description:** Highlights the text inside the last bracket. Selects text between `{` and `}`.
 
+### Move to Next String Character
+- **Command ID:** `lgd.moveToNextStringChar`
+- **Description:** Moves the cursor to the next string character (`"`, `'`, or `` ` ``).
+
+### Move to Last String Character
+- **Command ID:** `lgd.moveToLastStringChar`
+- **Description:** Moves the cursor to the last string character (`"`, `'`, or `` ` ``).
+
+### Highlight Inside Next String Character
+- **Command ID:** `lgd.highlightInsideNextStringChar`
+- **Description:** Highlights the inside of the next string character.
+
+### Highlight Inside Last String Character
+- **Command ID:** `lgd.highlightInsideLastStringChar`
+- **Description:** Highlights the inside of the last string character.
+
 ### Go to Assignment
 - **Command ID:** `lgd.goToAssignment`
 - **Description:** Moves the cursor to the beginning of an assignment, searching for the first letter after an equals sign.

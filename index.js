@@ -13,6 +13,10 @@ const HighlightInsideLastBracket = require('./src/Commands/HighlightInsideLastBr
 const GoToNextMethod = require('./src/Commands/GoToNextMethod.js');
 const GoToLastMethod = require('./src/Commands/GoToLastMethod.js');
 const GoToAssignment = require('./src/Commands/GoToAssignment.js');
+const MoveToNextStringChar = require('./src/Commands/MoveToNextStringChar.js');
+const MoveToLastStringChar = require('./src/Commands/MoveToLastStringChar.js');
+const HighlightInsideNextStringChar = require('./src/Commands/HighlightInsideNextStringChar.js');
+const HighlightInsideLastStringChar = require('./src/Commands/HighlightInsideLastStringChar.js');
 
 
 function activate(context) {
@@ -31,6 +35,10 @@ function activate(context) {
     const highlightInsideLastBracketCommand = HighlightInsideLastBracket.create().createCommand();
     const goToNextMethodCommand = GoToNextMethod.create().createCommand();
     const goToLastMethodCommand = GoToLastMethod.create().createCommand();
+    const moveToNextStringCharCommand = MoveToNextStringChar.create().createCommand();
+    const moveToLastStringCharCommand = MoveToLastStringChar.create().createCommand();
+    const highlightInsideNextStringCharCommand = HighlightInsideNextStringChar.create().createCommand();
+    const highlightInsideLastStringCharCommand = HighlightInsideLastStringChar.create().createCommand();
 
 
     context.subscriptions.push(goLastParagraphCommand);
@@ -48,6 +56,10 @@ function activate(context) {
     context.subscriptions.push(highlightInsideLastBracketCommand);
     context.subscriptions.push(goToNextMethodCommand);
     context.subscriptions.push(goToLastMethodCommand);
+    context.subscriptions.push(moveToNextStringCharCommand);
+    context.subscriptions.push(moveToLastStringCharCommand);
+    context.subscriptions.push(highlightInsideNextStringCharCommand);
+    context.subscriptions.push(highlightInsideLastStringCharCommand);
 }
 
 // this method is called when your extension is deactivated
