@@ -26,32 +26,12 @@ const MoveToNextOpenBracket = {
 
     const document = editor.document;
     const position = editor.selection.active;
-    let openBracketPosition = MoveToNextOpenBracket.findNextOpenBracket(document, position);
-
+    
+    let openBracketPosition = this.findNextChar(document, position, '{', 1);
     if (openBracketPosition) {
       editor.selection = new vscode.Selection(openBracketPosition, openBracketPosition);
       editor.revealRange(new vscode.Range(openBracketPosition, openBracketPosition));
     }
-  },
-
-  /**
-   * @description Finds the position of the next open bracket '{' in the document starting from the given position.
-   * @param {vscode.TextDocument} document - The document in which to search for the open bracket.
-   * @param {vscode.Position} position - The position from which to start the search.
-   * @returns {vscode.Position|null} The position of the next open bracket, or null if no open bracket is found.
-   */
-  findNextOpenBracket(document, position) {
-    for (let line = position.line; line < document.lineCount; line++) {
-      const textLine = document.lineAt(line).text;
-      const searchStart = line === position.line ? position.character : 0;
-      const openBracketIndex = textLine.indexOf('{', searchStart);
-
-      if (openBracketIndex !== -1) {
-        return new vscode.Position(line, openBracketIndex + 1);
-      }
-    }
-
-    return null;
   }
 };
 

@@ -28,33 +28,12 @@ const MoveToLastBracket = {
 
     const document = editor.document;
     const position = editor.selection.active;
-    let closeBracketPosition = MoveToLastBracket.getLastBracketPosition(document, position);
-
+    
+    let closeBracketPosition = this.findPreviousChar(document, position, '}');
     if (closeBracketPosition) {
       editor.selection = new vscode.Selection(closeBracketPosition, closeBracketPosition);
       editor.revealRange(new vscode.Range(closeBracketPosition, closeBracketPosition));
     }
-  },
-
-  /**
-   * @static
-   * @description Helper function to get the last closing bracket position.
-   * @param {vscode.TextDocument} document
-   * @param {vscode.Position} position
-   * @returns {vscode.Position|null}
-   */
-  getLastBracketPosition(document, position) {
-    for (let line = position.line; line >= 0; line--) {
-      const textLine = document.lineAt(line).text;
-      const searchEnd = line === position.line ? position.character - 1 : textLine.length;
-      const closeBracketIndex = textLine.lastIndexOf('}', searchEnd);
-
-      if (closeBracketIndex !== -1) {
-        return new vscode.Position(line, closeBracketIndex);
-      }
-    }
-
-    return null;
   }
 };
 

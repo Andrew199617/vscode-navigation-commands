@@ -27,7 +27,7 @@ const MoveToNextOpenParens = {
     const document = editor.document;
     const position = editor.selection.active;
 
-    const newPosition = this.findNextChar(document, position, '(');
+    const newPosition = this.findNextChar(document, position, '(', 1);
     if(newPosition) {
       editor.selection = new vscode.Selection(newPosition, newPosition);
       editor.revealRange(new vscode.Range(newPosition, newPosition));

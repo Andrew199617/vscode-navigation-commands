@@ -1,7 +1,7 @@
 {
   "name": "vscode-navigation-commands",
   "displayName": "Keyboard Navigation Commands",
-  "version": "1.0.6",
+  "version": "1.1.1",
   "icon": "LGDLogo.png",
   "publisher": "learn-game-development",
   "description": "Commands that you can bind to a keyboard shortcut to help with navigating a file. For example, moving to the next or previous Paragraph, word, WORD, line, character, or more.",
@@ -116,6 +116,16 @@
       {
         "command": "lgd.highlightInsideLastStringChar",
         "title": "Highlight Inside Last String Character",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToNextClosingParenthesis",
+        "title": "Move To Next Closing Parenthesis",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToLastClosingParenthesis",
+        "title": "Move To Last Closing Parenthesis",
         "category": "LGD"
       }
     ]

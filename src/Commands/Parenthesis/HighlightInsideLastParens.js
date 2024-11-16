@@ -1,8 +1,6 @@
 const { Oloo } = require('@mavega/oloo');
 const BaseCommand = require("../BaseCommand");
 const vscode = require('vscode');
-const { findLastOpenParens } = require('../../Utils/ParenthesisUtils');
-const MoveToLastOpenParens = require('./MoveToLastOpenParens');
 
 /**
  * @description Command to highlight the inside of the last parenthesis.
@@ -28,9 +26,9 @@ const HighlightInsideLastParens = {
     const document = editor.document;
     const selection = editor.selection;
     const position = selection.isEmpty ? selection.active : selection.start;
-    
-    const openParenPosition = this.findLastChar(document, position, '(');
-    if (openParenPosition) {
+
+    const openParenPosition = this.findPreviousChar(document, position, '(', 1);
+    if (!openParenPosition) {
       return;
     }
 

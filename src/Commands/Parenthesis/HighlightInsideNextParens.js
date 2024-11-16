@@ -1,8 +1,6 @@
 const { Oloo } = require('@mavega/oloo');
 const BaseCommand = require("../BaseCommand");
 const vscode = require('vscode');
-const { findNextOpenParens } = require('../../Utils/ParenthesisUtils');
-const MoveToNextOpenParens = require('./MoveToNextOpenParens');
 
 /**
  * @description Command to highlight the inside of the next parenthesis.
@@ -29,7 +27,7 @@ const HighlightInsideNextParens = {
     const selection = editor.selection;
     const position = selection.isEmpty ? selection.active : selection.start;
     
-    const openParenPosition = this.findNextChar(document, position, '(');
+    const openParenPosition = this.findNextChar(document, position, '(', 1);
     if (!openParenPosition) {
       return;
     }

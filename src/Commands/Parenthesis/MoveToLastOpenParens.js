@@ -27,7 +27,7 @@ const MoveToLastOpenParens = {
     const document = editor.document;
     const position = editor.selection.active;
 
-    let openParenPosition = this.findLastChar(document, position, '(');
+    let openParenPosition = this.findPreviousChar(document, position, '(', 1);
     if (openParenPosition) {
       editor.selection = new vscode.Selection(openParenPosition, openParenPosition);
       editor.revealRange(new vscode.Range(openParenPosition, openParenPosition));
