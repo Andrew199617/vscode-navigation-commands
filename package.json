@@ -1,7 +1,7 @@
 {
   "name": "vscode-navigation-commands",
   "displayName": "Keyboard Navigation Commands",
-  "version": "1.0.5",
+  "version": "1.1.2",
   "icon": "LGDLogo.png",
   "publisher": "learn-game-development",
   "description": "Commands that you can bind to a keyboard shortcut to help with navigating a file. For example, moving to the next or previous Paragraph, word, WORD, line, character, or more.",
@@ -61,6 +61,36 @@
         "category": "LGD"
       },
       {
+        "command": "lgd.goToNextBracket",
+        "title": "Go to next closing bracket. Place cursor behind the }",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.goToLastBracket",
+        "title": "Go to last closing bracket. Place cursor behind the }",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToNextOpenBracket",
+        "title": "Move to next opening bracket. Place cursor after the {",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToLastOpenBracket",
+        "title": "Move to last opening bracket. Place cursor after the {",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.highlightInsideNextBracket",
+        "title": "Highlight inside next bracket. Select text between { and }",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.highlightInsideLastBracket",
+        "title": "Highlight inside last bracket. Select text between { and }",
+        "category": "LGD"
+      },
+      {
         "command": "lgd.goToNextMethod",
         "title": "Go to next method in class, object, or module.",
         "category": "LGD"
@@ -68,6 +98,36 @@
       {
         "command": "lgd.goToLastMethod",
         "title": "Go to last method in class, object, or module.",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToNextStringChar",
+        "title": "Move To Next String Character",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToLastStringChar",
+        "title": "Move To Last String Character",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.highlightInsideNextStringChar",
+        "title": "Highlight Inside Next String Character",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.highlightInsideLastStringChar",
+        "title": "Highlight Inside Last String Character",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToNextClosingParenthesis",
+        "title": "Move To Next Closing Parenthesis",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.moveToLastClosingParenthesis",
+        "title": "Move To Last Closing Parenthesis",
         "category": "LGD"
       }
     ]
@@ -92,7 +152,10 @@
     "Go to last line",
     "csharp",
     "javascript",
-    "typescript"
+    "typescript",
+    "Go to last string character",
+    "Highlight inside next string character",
+    "Highlight inside last string character"
   ],
   "author": "Learn Game Development",
   "license": "MIT",

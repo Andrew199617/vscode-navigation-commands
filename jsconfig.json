@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
     "checkJs": false,
-    "target": "ES2022",
-    "jsx": "react-jsx",
-    "module": "ES2022",
+    "target": "ES2023",
     "alwaysStrict": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "allowUmdGlobalAccess": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "baseUrl": ".",
+    "baseUrl": "."
   },
   "exclude": [
+    ".github",
     "node_modules"
   ]
 }
