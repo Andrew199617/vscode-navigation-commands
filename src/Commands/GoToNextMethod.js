@@ -81,8 +81,20 @@ const GoToNextMethod = {
    * @returns {boolean} Returns true if a method was found and navigation was successful, otherwise false.
    */
   getMethod(line, i) {
+    const editor = vscode.window.activeTextEditor;
+    const lines = editor?.document?.getText().split('\n') || [];
+    const languageId = editor?.document?.languageId;
+    if (languageId === 'csharp') {
+      return this.getMethodCSharp(line, i, lines);
+    }
+
+    return this.getMethodJavaScript(line, i, lines);
+  },
+
+  // JavaScript / TypeScript style method detection (enhanced)
+  getMethodJavaScript(line, i, lines) {
     let tabIndented = new RegExp(`^ {${this.tabSize}}[\\w\\$]{1}`, 'm').test(line)
-      || new RegExp(`^\t{1}[\\w\\$]{1}`, 'm').test(line);
+      || new RegExp(`^\\t{1}[\\w\\$]{1}`, 'm').test(line);
     const notIndented = /^[\\w\\$]{1}/m.test(line);
 
     if (!tabIndented && !notIndented) {
@@ -90,23 +102,95 @@ const GoToNextMethod = {
     }
 
     const trimmedLine = line.trim();
-    if (
-      (/^function\s+\w+\s*\(.+?{/ms.test(trimmedLine) ||
-        /^\w+\s*:\s*function\s*\(.+?{/ms.test(trimmedLine) ||
-        /^(\w+|async \w+|get \w+|set \w+)\s*\(.+?{/ms.test(trimmedLine)) &&
-      // does not match if, while, for, switch, etc.
-      !/^if/m.test(trimmedLine) &&
-      !/^while/m.test(trimmedLine) &&
-      !/^for/m.test(trimmedLine) &&
-      !/^switch/m.test(trimmedLine) &&
-      !/^else/m.test(trimmedLine)
-    ) {
+
+    // Common false positives
+    if (/^(if|for|while|switch|else)\b/.test(trimmedLine)) {
+      return false;
+    }
+
+    // Also consider the next line to support Allman style where `{` is on the next line
+    const nextLine = (lines && lines[i + 1]) ? lines[i + 1].trim() : '';
+    const combined = trimmedLine + ' ' + nextLine;
+
+    const jsPatterns = [
+      // function foo() {
+      /^function\s+\w+\s*\([^)]*\)\s*\{/,
+      // foo: function() {
+      /^\w+\s*:\s*function\s*\([^)]*\)\s*\{/,
+      // TS/JS class method possibly with modifiers
+      /^(?:public\s+|private\s+|protected\s+|readonly\s+|override\s+|declare\s+)?(?:static\s+)?(?:async\s+)?(?:get\s+|set\s+)?\w+\s*\([^)]*\)\s*\{/,
+      // class/object property arrow method: foo = () => {  or foo: () => {
+      /^\w+\s*(?::|=)\s*\([^)]*\)\s*=>\s*(?:\{|[^;]+;?)/
+    ];
+
+    if (jsPatterns.some(r => r.test(trimmedLine) || r.test(combined))) {
       const editor = vscode.window.activeTextEditor;
       const newPosition = new vscode.Position(i, tabIndented ? this.tabSize : 0);
       editor.selection = new vscode.Selection(newPosition, newPosition);
       editor.revealRange(new vscode.Range(newPosition, newPosition));
       return true;
     }
+    return false;
+  },
+
+  // C# method detection (enhanced)
+  getMethodCSharp(line, i, lines) {
+    if (!line) {
+      return false;
+    }
+
+    let tabIndented = new RegExp(`^ {${this.tabSize}}[A-Za-z_]`, 'm').test(line)
+      || new RegExp(`^\\t{1}[A-Za-z_]`, 'm').test(line);
+    const notIndented = /^[A-Za-z_]/m.test(line);
+
+    if (!tabIndented && !notIndented) {
+      return false;
+    }
+
+    const trimmedLine = line.trim();
+
+    // Exclude control statements & attributes and common declarations
+    if (/^(if|for|foreach|while|switch|using|lock|else|catch|finally|return)\b/.test(trimmedLine)) {
+      return false;
+    }
+
+    if (/^\[.*\]$/.test(trimmedLine)) { // attribute line
+      return false;
+    }
+
+    // Combine current and next line to catch signatures where { or => is on next line
+    const nextLine = (lines && lines[i + 1]) ? lines[i + 1].trim() : '';
+    const combined = trimmedLine + ' ' + nextLine;
+
+    // Return type (with namespaces/generics/arrays), name (optionally generic), then params
+    const csharpMethodRegex = new RegExp(
+      '^(?:public|private|protected|internal)?' +
+      '(?:\\s+(?:static|async|virtual|override|sealed|abstract|extern|unsafe|new|partial))*' +
+      '\\s+[A-Za-z_][\\w<>\\[\\],\\.]*' + // return type (allow dotted namespace and generics)
+      '\\s+[A-Za-z_]\\w*(?:<[^>]+>)?' + // method name with optional generic type params
+      '\\s*\\([^;{}]*\\)\\s*(?:\\{|=>)'
+    );
+
+    // Constructor: access modifier(s) + ClassName(...) { or =>
+    const csharpCtorRegex = new RegExp(
+      '^(?:public|private|protected|internal)?' +
+      '(?:\\s+(?:static|unsafe|new|partial))*' +
+      '\\s*[A-Za-z_]\\w*' +
+      '\\s*\\([^;{}]*\\)\\s*(?:\\{|=>)'
+    );
+
+    const isMethod = csharpMethodRegex.test(trimmedLine) || csharpMethodRegex.test(combined) ||
+      csharpCtorRegex.test(trimmedLine) || csharpCtorRegex.test(combined);
+
+    if (isMethod) {
+      const editor = vscode.window.activeTextEditor;
+      const newPosition = new vscode.Position(i, tabIndented ? this.tabSize : 0);
+      editor.selection = new vscode.Selection(newPosition, newPosition);
+      editor.revealRange(new vscode.Range(newPosition, newPosition));
+      return true;
+    }
+
+    return false;
   }
 };
 
