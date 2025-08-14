@@ -139,21 +139,24 @@ const GoToNextMethod = {
       return false;
     }
 
-    let tabIndented = new RegExp(`^ {${this.tabSize}}[A-Za-z_]`, 'm').test(line)
-      || new RegExp(`^\\t{1}[A-Za-z_]`, 'm').test(line);
-    const notIndented = /^[A-Za-z_]/m.test(line);
-
-    if (!tabIndented && !notIndented) {
+    // Accept any indentation depth (spaces or tabs)
+    const startsWithIdentifier = /^\s*[A-Za-z_]/.test(line);
+    if (!startsWithIdentifier) {
       return false;
     }
 
     const trimmedLine = line.trim();
 
-    // Exclude control statements & attributes and common declarations
+    // Exclude non-method constructs
     if (/^(if|for|foreach|while|switch|using|lock|else|catch|finally|return)\b/.test(trimmedLine)) {
       return false;
     }
-
+    if (/^(namespace|class|struct|interface|enum)\b/.test(trimmedLine)) {
+      return false;
+    }
+    if (/^#(region|endregion)\b/.test(trimmedLine)) {
+      return false;
+    }
     if (/^\[.*\]$/.test(trimmedLine)) { // attribute line
       return false;
     }
@@ -162,16 +165,16 @@ const GoToNextMethod = {
     const nextLine = (lines && lines[i + 1]) ? lines[i + 1].trim() : '';
     const combined = trimmedLine + ' ' + nextLine;
 
-    // Return type (with namespaces/generics/arrays), name (optionally generic), then params
+    // Return type (namespaces/generics/arrays allowed), name (optionally generic), then params
     const csharpMethodRegex = new RegExp(
       '^(?:public|private|protected|internal)?' +
       '(?:\\s+(?:static|async|virtual|override|sealed|abstract|extern|unsafe|new|partial))*' +
-      '\\s+[A-Za-z_][\\w<>\\[\\],\\.]*' + // return type (allow dotted namespace and generics)
-      '\\s+[A-Za-z_]\\w*(?:<[^>]+>)?' + // method name with optional generic type params
+      '\\s+[A-Za-z_][\\w<>\\[\\],\\.]*' + // return type
+      '\\s+[A-Za-z_]\\w*(?:<[^>]+>)?' + // method name (optional generic)
       '\\s*\\([^;{}]*\\)\\s*(?:\\{|=>)'
     );
 
-    // Constructor: access modifier(s) + ClassName(...) { or =>
+    // Constructor pattern: modifiers + ClassName(params) { or =>
     const csharpCtorRegex = new RegExp(
       '^(?:public|private|protected|internal)?' +
       '(?:\\s+(?:static|unsafe|new|partial))*' +
@@ -184,7 +187,7 @@ const GoToNextMethod = {
 
     if (isMethod) {
       const editor = vscode.window.activeTextEditor;
-      const newPosition = new vscode.Position(i, tabIndented ? this.tabSize : 0);
+      const newPosition = new vscode.Position(i, line.match(/^\s*/)[0].length);
       editor.selection = new vscode.Selection(newPosition, newPosition);
       editor.revealRange(new vscode.Range(newPosition, newPosition));
       return true;
