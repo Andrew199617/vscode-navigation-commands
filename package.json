@@ -57,7 +57,7 @@
       },
       {
         "command": "lgd.goToAssignment",
-        "title": "Go to the begging of an assignment. Searches for first letter after an equals sign.",
+        "title": "Go to the beginning of an assignment. Searches for first letter after an equals sign.",
         "category": "LGD"
       },
       {
@@ -128,6 +128,11 @@
       {
         "command": "lgd.moveToLastClosingParenthesis",
         "title": "Move To Last Closing Parenthesis",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.removeUnused",
+        "title": "Remove Unused Usings (C#)",
         "category": "LGD"
       }
     ]

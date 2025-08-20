@@ -24,6 +24,8 @@ const MoveToLastStringChar = require('./src/Commands/Strings/MoveToLastStringCha
 const HighlightInsideNextStringChar = require('./src/Commands/Strings/HighlightInsideNextStringChar.js');
 const HighlightInsideLastStringChar = require('./src/Commands/Strings/HighlightInsideLastStringChar.js');
 
+const RemoveUnusedUsings = require('./src/Commands/csharp/RemoveUnusedUsings.js');
+
 function activate(context) {
     const goNextParagraphCommand = GoToNextParagraph.create().createCommand();
     const goLastParagraphCommand = GoToLastParagraph.create().createCommand();
@@ -72,6 +74,9 @@ function activate(context) {
     context.subscriptions.push(moveToLastStringCharCommand);
     context.subscriptions.push(highlightInsideNextStringCharCommand);
     context.subscriptions.push(highlightInsideLastStringCharCommand);
+
+    const removeUnusedUsingsCommand = RemoveUnusedUsings.create().createCommand();
+    context.subscriptions.push(removeUnusedUsingsCommand);
 }
 
 module.exports = {
