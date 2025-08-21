@@ -25,6 +25,7 @@ const HighlightInsideNextStringChar = require('./src/Commands/Strings/HighlightI
 const HighlightInsideLastStringChar = require('./src/Commands/Strings/HighlightInsideLastStringChar.js');
 
 const RemoveUnusedUsings = require('./src/Commands/csharp/RemoveUnusedUsings.js');
+const OpenHeaderOrSourceBeside = require('./src/Commands/OpenHeaderOrSourceBeside.js');
 
 function activate(context) {
     const goNextParagraphCommand = GoToNextParagraph.create().createCommand();
@@ -77,6 +78,9 @@ function activate(context) {
 
     const removeUnusedUsingsCommand = RemoveUnusedUsings.create().createCommand();
     context.subscriptions.push(removeUnusedUsingsCommand);
+
+    const openHeaderOrSourceBesideCommand = OpenHeaderOrSourceBeside.create().createCommand();
+    context.subscriptions.push(openHeaderOrSourceBesideCommand);
 }
 
 module.exports = {

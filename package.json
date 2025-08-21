@@ -21,7 +21,9 @@
   "activationEvents": [
     "onLanguage:javascript",
     "onLanguage:typescript",
-    "onLanguage:csharp"
+  "onLanguage:csharp",
+  "onLanguage:c",
+  "onLanguage:cpp"
   ],
   "contributes": {
     "commands": [
@@ -133,6 +135,11 @@
       {
         "command": "lgd.removeUnused",
         "title": "Remove Unused Usings (C#)",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.openHeaderOrSourceBeside",
+        "title": "Open Header/Source Beside (Preview)",
         "category": "LGD"
       }
     ]
