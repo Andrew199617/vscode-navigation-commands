@@ -44,7 +44,7 @@ function findLgdFiles(directory)
 function rewriteRequires(code, lgdFile)
 {
     const directory = path.dirname(lgdFile);
-    return code.replace(/require\(['"](\.[^'"]*?)\.js['"]\)/g, (match, specifier) =>
+    return code.replace(/require\(['"](\.[^'"]*?)(\.js)?['"]\)/g, (match, specifier) =>
     {
         const target = path.resolve(directory, `${specifier}.lgd`);
         if(fs.existsSync(target))
