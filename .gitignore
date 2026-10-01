@@ -60,3 +60,5 @@ typings/
 
 # next.js build output
 .next
+# Generated LGD outputs - .lgd is the source of truth; regenerate with: node scripts/compile-lgd.js
+*.lgd.js
