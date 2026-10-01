@@ -1,0 +1,6 @@
+# Normalize text to LF in Git and in every working tree.
+* text=auto eol=lf
+
+# Present LGD on GitHub: highlight .lgd as TypeScript and collapse generated outputs.
+*.lgd linguist-language=TypeScript
+*.lgd.js linguist-generated=true
