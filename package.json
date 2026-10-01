@@ -11,6 +11,8 @@
   },
   "main": "index.lgd.js",
   "scripts": {
+    "compile": "node scripts/compile-lgd.js",
+    "pretest": "node scripts/compile-lgd.js",
     "test": "node --test tests/commands.test.js"
   },
   "categories": [

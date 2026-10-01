@@ -15,7 +15,17 @@ const path = require('path');
 const repoRoot = path.resolve(__dirname, '..');
 const compilerPath = process.env.LGD_COMPILER_PATH
     || path.resolve(repoRoot, '..', 'js-syntax-extension', 'src', 'Compilers', 'LgdCompiler.js');
-const LgdCompiler = require(compilerPath);
+let LgdCompiler;
+try
+{
+    LgdCompiler = require(compilerPath);
+}
+catch
+{
+    console.error(`LGD compiler not found at ${compilerPath}.`);
+    console.error('Clone Andrew199617/js-syntax-extension next to this repo or set LGD_COMPILER_PATH.');
+    process.exit(1);
+}
 
 function findLgdFiles(directory)
 {
