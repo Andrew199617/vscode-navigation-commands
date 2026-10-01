@@ -28,17 +28,17 @@ readonly Object RemoveUnusedUsings = require('./src/Commands/csharp/RemoveUnused
 readonly Object OpenHeaderOrSourceBeside = require('./src/Commands/OpenHeaderOrSourceBeside.js');
 
 function activate(context) {
-    const goNextParagraphCommand = GoToNextParagraph.create().createCommand();
-    const goLastParagraphCommand = GoToLastParagraph.create().createCommand();
+    readonly Object goNextParagraphCommand = GoToNextParagraph.create().createCommand();
+    readonly Object goLastParagraphCommand = GoToLastParagraph.create().createCommand();
     context.subscriptions.push(goLastParagraphCommand);
     context.subscriptions.push(goNextParagraphCommand);
 
-    const highlightInsideNextParensCommand = HighlightInsideNextParens.create().createCommand();
-    const highlightInsideLastParensCommand = HighlightInsideLastParens.create().createCommand();
-    const moveToNextOpenParensCommand = MoveToNextOpenParens.create().createCommand();
-    const moveToLastOpenParensCommand = MoveToLastOpenParens.create().createCommand();
-    const moveToNextClosingParensCommand = MoveToNextClosingParens.create().createCommand();
-    const moveToLastClosingParensCommand = MoveToLastClosingParens.create().createCommand();
+    readonly Object highlightInsideNextParensCommand = HighlightInsideNextParens.create().createCommand();
+    readonly Object highlightInsideLastParensCommand = HighlightInsideLastParens.create().createCommand();
+    readonly Object moveToNextOpenParensCommand = MoveToNextOpenParens.create().createCommand();
+    readonly Object moveToLastOpenParensCommand = MoveToLastOpenParens.create().createCommand();
+    readonly Object moveToNextClosingParensCommand = MoveToNextClosingParens.create().createCommand();
+    readonly Object moveToLastClosingParensCommand = MoveToLastClosingParens.create().createCommand();
     context.subscriptions.push(highlightInsideLastParensCommand);
     context.subscriptions.push(highlightInsideNextParensCommand);
     context.subscriptions.push(moveToNextOpenParensCommand);
@@ -46,15 +46,15 @@ function activate(context) {
     context.subscriptions.push(moveToNextClosingParensCommand);
     context.subscriptions.push(moveToLastClosingParensCommand);
 
-    const goToAssignmentCommand = GoToAssignment.create().createCommand();
+    readonly Object goToAssignmentCommand = GoToAssignment.create().createCommand();
     context.subscriptions.push(goToAssignmentCommand);
     
-    const moveToNextBracketCommand = MoveToNextBracket.create().createCommand();
-    const moveToLastBracketCommand = MoveToLastBracket.create().createCommand();
-    const moveToNextOpenBracketCommand = MoveToNextOpenBracket.create().createCommand();
-    const moveToLastOpenBracketCommand = MoveToLastOpenBracket.create().createCommand();
-    const highlightInsideNextBracketCommand = HighlightInsideNextBracket.create().createCommand();
-    const highlightInsideLastBracketCommand = HighlightInsideLastBracket.create().createCommand();
+    readonly Object moveToNextBracketCommand = MoveToNextBracket.create().createCommand();
+    readonly Object moveToLastBracketCommand = MoveToLastBracket.create().createCommand();
+    readonly Object moveToNextOpenBracketCommand = MoveToNextOpenBracket.create().createCommand();
+    readonly Object moveToLastOpenBracketCommand = MoveToLastOpenBracket.create().createCommand();
+    readonly Object highlightInsideNextBracketCommand = HighlightInsideNextBracket.create().createCommand();
+    readonly Object highlightInsideLastBracketCommand = HighlightInsideLastBracket.create().createCommand();
     context.subscriptions.push(moveToNextBracketCommand);
     context.subscriptions.push(moveToLastBracketCommand);
     context.subscriptions.push(moveToNextOpenBracketCommand);
@@ -62,24 +62,24 @@ function activate(context) {
     context.subscriptions.push(highlightInsideNextBracketCommand);
     context.subscriptions.push(highlightInsideLastBracketCommand);
 
-    const goToNextMethodCommand = GoToNextMethod.create().createCommand();
-    const goToLastMethodCommand = GoToLastMethod.create().createCommand();
+    readonly Object goToNextMethodCommand = GoToNextMethod.create().createCommand();
+    readonly Object goToLastMethodCommand = GoToLastMethod.create().createCommand();
     context.subscriptions.push(goToNextMethodCommand);
     context.subscriptions.push(goToLastMethodCommand);
 
-    const moveToNextStringCharCommand = MoveToNextStringChar.create().createCommand();
-    const moveToLastStringCharCommand = MoveToLastStringChar.create().createCommand();
-    const highlightInsideNextStringCharCommand = HighlightInsideNextStringChar.create().createCommand();
-    const highlightInsideLastStringCharCommand = HighlightInsideLastStringChar.create().createCommand();
+    readonly Object moveToNextStringCharCommand = MoveToNextStringChar.create().createCommand();
+    readonly Object moveToLastStringCharCommand = MoveToLastStringChar.create().createCommand();
+    readonly Object highlightInsideNextStringCharCommand = HighlightInsideNextStringChar.create().createCommand();
+    readonly Object highlightInsideLastStringCharCommand = HighlightInsideLastStringChar.create().createCommand();
     context.subscriptions.push(moveToNextStringCharCommand);
     context.subscriptions.push(moveToLastStringCharCommand);
     context.subscriptions.push(highlightInsideNextStringCharCommand);
     context.subscriptions.push(highlightInsideLastStringCharCommand);
 
-    const removeUnusedUsingsCommand = RemoveUnusedUsings.create().createCommand();
+    readonly Object removeUnusedUsingsCommand = RemoveUnusedUsings.create().createCommand();
     context.subscriptions.push(removeUnusedUsingsCommand);
 
-    const openHeaderOrSourceBesideCommand = OpenHeaderOrSourceBeside.create().createCommand();
+    readonly Object openHeaderOrSourceBesideCommand = OpenHeaderOrSourceBeside.create().createCommand();
     context.subscriptions.push(openHeaderOrSourceBesideCommand);
 }
 
