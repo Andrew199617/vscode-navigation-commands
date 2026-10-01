@@ -7,7 +7,7 @@ const vscode = require('vscode');
  * @description Command to move to the next opening bracket.
  * @extends {BaseCommandType}
  */
-Object MoveToNextOpenBracket = {
+readonly Object MoveToNextOpenBracket = {
   /**
    * @description Initialize an instance of MoveToNextOpenBracket.
    * @returns {MoveToNextOpenBracketType}

@@ -6,7 +6,7 @@ const vscode = require('vscode');
  * @description Command to trigger C# IDE0005 cleanup (remove unused usings) using Organize Imports.
  * @extends {BaseCommandType}
  */
-Object RemoveUnusedUsings = {
+readonly Object RemoveUnusedUsings = {
   /**
    * @description Initialize an instance of RemoveUnusedUsings.
    * @returns {RemoveUnusedUsingsType}

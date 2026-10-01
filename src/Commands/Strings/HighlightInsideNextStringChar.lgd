@@ -7,7 +7,7 @@ const MoveToNextStringChar = require("./MoveToNextStringChar.js");
  * @description Command to highlight the inside of the next string character.
  * @extends {BaseCommandType}
  */
-Object HighlightInsideNextStringChar = {
+readonly Object HighlightInsideNextStringChar = {
   /**
    * @description Initialize an instance of HighlightInsideNextStringChar.
    * @returns {HighlightInsideNextStringCharType}

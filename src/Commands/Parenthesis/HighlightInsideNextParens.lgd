@@ -6,7 +6,7 @@ const vscode = require('vscode');
  * @description Command to highlight the inside of the next parenthesis.
  * @extends {BaseCommandType}
  */
-Object HighlightInsideNextParens = {
+readonly Object HighlightInsideNextParens = {
   /**
    * @description Initialize an instance of HighlightInsideNextParens.
    * @returns {HighlightInsideNextParensType}

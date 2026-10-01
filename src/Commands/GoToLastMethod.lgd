@@ -6,7 +6,7 @@ const GoToNextMethod = require('./GoToNextMethod');
  * @description Command to navigate to the last method in a class or object.
  * @extends {GoToNextMethodType}
  */
-Object GoToLastMethod = {
+readonly Object GoToLastMethod = {
   /**
    * @description Initialize an instance of GoToLastMethod.
    * @returns {GoToLastMethodType}

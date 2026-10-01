@@ -3,7 +3,7 @@ const vscode = require('vscode');
 /**
 * @description Helps Create an Object that can generate a Command for vscode.
 */
-Object BaseCommand = {
+readonly Object BaseCommand = {
   /**
   * @description Initialize an instance of BaseCommand.
   * @param commandName The name of the command.

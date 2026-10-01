@@ -6,7 +6,7 @@ const vscode = require('vscode');
  * @description Command to navigate to the next method in a class or object.
  * @extends {BaseCommandType}
  */
-Object GoToNextMethod = {
+readonly Object GoToNextMethod = {
   /**
    * @description Initialize an instance of GoToNextMethod.
    * @returns {GoToNextMethodType}

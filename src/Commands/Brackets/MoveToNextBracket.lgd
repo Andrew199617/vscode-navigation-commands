@@ -6,7 +6,7 @@ const vscode = require('vscode');
  * @description Command to move to the next closing bracket.
  * @extends {BaseCommandType}
  */
-Object MoveToNextBracket = {
+readonly Object MoveToNextBracket = {
   /**
    * @description Initialize an instance of MoveToNextBracket.
    * @returns {MoveToNextBracketType}

@@ -7,7 +7,7 @@ const vscode = require('vscode');
  * @description Command to move to the last opening parenthesis.
  * @extends {BaseCommandType}
  */
-Object MoveToLastOpenParens = {
+readonly Object MoveToLastOpenParens = {
   /**
    * @description Initialize an instance of MoveToLastOpenParens.
    * @returns {MoveToLastOpenParensType}

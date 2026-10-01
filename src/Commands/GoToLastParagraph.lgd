@@ -6,7 +6,7 @@ const vscode = require('vscode');
 * @description Command to help navigate in a window.
 * @extends {BaseCommandType}
 */
-Object GoToLastParagraph = {
+readonly Object GoToLastParagraph = {
   /**
   * @description Initialize an instance of GoToLastParagraph.
   * @returns {GoToLastParagraphType}

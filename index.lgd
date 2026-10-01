@@ -1,31 +1,31 @@
-const GoToNextParagraph = require('./src/Commands/GoToNextParagraph.js');
-const GoToLastParagraph = require('./src/Commands/GoToLastParagraph.js');
+readonly Object GoToNextParagraph = require('./src/Commands/GoToNextParagraph.js');
+readonly Object GoToLastParagraph = require('./src/Commands/GoToLastParagraph.js');
 
-const HighlightInsideNextParens = require('./src/Commands/Parenthesis/HighlightInsideNextParens.js');
-const HighlightInsideLastParens = require('./src/Commands/Parenthesis/HighlightInsideLastParens.js');
-const MoveToNextOpenParens = require('./src/Commands/Parenthesis/MoveToNextOpenParens.js');
-const MoveToLastOpenParens = require('./src/Commands/Parenthesis/MoveToLastOpenParens.js');
-const MoveToNextClosingParens = require('./src/Commands/Parenthesis/MoveToNextClosingParens.js');
-const MoveToLastClosingParens = require('./src/Commands/Parenthesis/MoveToLastClosingParens.js');
+readonly Object HighlightInsideNextParens = require('./src/Commands/Parenthesis/HighlightInsideNextParens.js');
+readonly Object HighlightInsideLastParens = require('./src/Commands/Parenthesis/HighlightInsideLastParens.js');
+readonly Object MoveToNextOpenParens = require('./src/Commands/Parenthesis/MoveToNextOpenParens.js');
+readonly Object MoveToLastOpenParens = require('./src/Commands/Parenthesis/MoveToLastOpenParens.js');
+readonly Object MoveToNextClosingParens = require('./src/Commands/Parenthesis/MoveToNextClosingParens.js');
+readonly Object MoveToLastClosingParens = require('./src/Commands/Parenthesis/MoveToLastClosingParens.js');
 
-const MoveToNextBracket = require('./src/Commands/Brackets/MoveToNextBracket.js');
-const MoveToLastBracket = require('./src/Commands/Brackets/MoveToLastBracket.js');
-const MoveToNextOpenBracket = require('./src/Commands/Brackets/MoveToNextOpenBracket.js');
-const MoveToLastOpenBracket = require('./src/Commands/Brackets/MoveToLastOpenBracket.js');
-const HighlightInsideNextBracket = require('./src/Commands/Brackets/HighlightInsideNextBracket.js');
-const HighlightInsideLastBracket = require('./src/Commands/Brackets/HighlightInsideLastBracket.js');
+readonly Object MoveToNextBracket = require('./src/Commands/Brackets/MoveToNextBracket.js');
+readonly Object MoveToLastBracket = require('./src/Commands/Brackets/MoveToLastBracket.js');
+readonly Object MoveToNextOpenBracket = require('./src/Commands/Brackets/MoveToNextOpenBracket.js');
+readonly Object MoveToLastOpenBracket = require('./src/Commands/Brackets/MoveToLastOpenBracket.js');
+readonly Object HighlightInsideNextBracket = require('./src/Commands/Brackets/HighlightInsideNextBracket.js');
+readonly Object HighlightInsideLastBracket = require('./src/Commands/Brackets/HighlightInsideLastBracket.js');
 
-const GoToNextMethod = require('./src/Commands/GoToNextMethod.js');
-const GoToLastMethod = require('./src/Commands/GoToLastMethod.js');
-const GoToAssignment = require('./src/Commands/GoToAssignment.js');
+readonly Object GoToNextMethod = require('./src/Commands/GoToNextMethod.js');
+readonly Object GoToLastMethod = require('./src/Commands/GoToLastMethod.js');
+readonly Object GoToAssignment = require('./src/Commands/GoToAssignment.js');
 
-const MoveToNextStringChar = require('./src/Commands/Strings/MoveToNextStringChar.js');
-const MoveToLastStringChar = require('./src/Commands/Strings/MoveToLastStringChar.js');
-const HighlightInsideNextStringChar = require('./src/Commands/Strings/HighlightInsideNextStringChar.js');
-const HighlightInsideLastStringChar = require('./src/Commands/Strings/HighlightInsideLastStringChar.js');
+readonly Object MoveToNextStringChar = require('./src/Commands/Strings/MoveToNextStringChar.js');
+readonly Object MoveToLastStringChar = require('./src/Commands/Strings/MoveToLastStringChar.js');
+readonly Object HighlightInsideNextStringChar = require('./src/Commands/Strings/HighlightInsideNextStringChar.js');
+readonly Object HighlightInsideLastStringChar = require('./src/Commands/Strings/HighlightInsideLastStringChar.js');
 
-const RemoveUnusedUsings = require('./src/Commands/csharp/RemoveUnusedUsings.js');
-const OpenHeaderOrSourceBeside = require('./src/Commands/OpenHeaderOrSourceBeside.js');
+readonly Object RemoveUnusedUsings = require('./src/Commands/csharp/RemoveUnusedUsings.js');
+readonly Object OpenHeaderOrSourceBeside = require('./src/Commands/OpenHeaderOrSourceBeside.js');
 
 function activate(context) {
     const goNextParagraphCommand = GoToNextParagraph.create().createCommand();

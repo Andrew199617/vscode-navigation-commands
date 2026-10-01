@@ -7,7 +7,7 @@ const vscode = require('vscode');
  * @description Command to move to the next opening parenthesis.
  * @extends {BaseCommandType}
  */
-Object MoveToNextOpenParens = {
+readonly Object MoveToNextOpenParens = {
   /**
    * @description Initialize an instance of MoveToNextOpenParens.
    * @returns {MoveToNextOpenParensType}

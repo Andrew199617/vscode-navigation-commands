@@ -7,7 +7,7 @@ const fs = require('fs');
  * @description Open the counterpart C/C++ file (.h/.hpp <-> .cpp/.c/.cc/.cxx) to the active document beside, in preview, and auto-close it when selection changes away.
  * @type {BaseCommandType & { _listener?: vscode.Disposable }}
  */
-Object OpenHeaderOrSourceBeside = {
+readonly Object OpenHeaderOrSourceBeside = {
   /**
    * @returns {typeof OpenHeaderOrSourceBeside}
    */

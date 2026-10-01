@@ -6,7 +6,7 @@ const vscode = require('vscode');
  * @description Command to highlight the inside of the last opening bracket.
  * @extends {BaseCommandType}
  */
-Object HighlightInsideLastBracket = {
+readonly Object HighlightInsideLastBracket = {
   /**
    * @description Initialize an instance of HighlightInsideLastBracket.
    * @returns {HighlightInsideLastBracketType}

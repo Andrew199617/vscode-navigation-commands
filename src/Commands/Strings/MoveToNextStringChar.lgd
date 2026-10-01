@@ -6,7 +6,7 @@ const vscode = require('vscode');
  * @description Command to move to the next string character (" or ' or `).
  * @extends {BaseCommandType}
  */
-Object MoveToNextStringChar = {
+readonly Object MoveToNextStringChar = {
   /**
    * @description Initialize an instance of MoveToNextStringChar.
    * @returns {MoveToNextStringCharType}

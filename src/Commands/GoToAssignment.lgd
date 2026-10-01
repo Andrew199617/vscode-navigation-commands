@@ -6,7 +6,7 @@ const vscode = require('vscode');
  * @description Command to go to the start of the assignment in the current line.
  * @extends {BaseCommandType}
  */
-Object GoToAssignment = {
+readonly Object GoToAssignment = {
   /**
    * @description Initialize an instance of GoToAssignment.
    * @returns {GoToAssignmentType}

@@ -6,7 +6,7 @@ const vscode = require('vscode');
  * @description Command to move to the last string character (" or ' or `).
  * @extends {BaseCommandType}
  */
-Object MoveToLastStringChar = {
+readonly Object MoveToLastStringChar = {
   /**
    * @description Initialize an instance of MoveToLastStringChar.
    * @returns {MoveToLastStringCharType}
