@@ -1,6 +1,6 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("./BaseCommand");
-const vscode = require('vscode');
+readonly Object BaseCommand = require("./BaseCommand");
+readonly Object vscode = require('vscode');
 
 /**
 * @description Command to help navigate in a window.
@@ -12,23 +12,23 @@ readonly Object GoToLastParagraph = {
   * @returns {GoToLastParagraphType}
   */
   create() {
-    const goToLastParagraph = Oloo.assign(BaseCommand.create("lgd.goToLastParagraph", "Go To Last Paragraph"), GoToLastParagraph);
+    readonly Object goToLastParagraph = Oloo.assign(BaseCommand.create("lgd.goToLastParagraph", "Go To Last Paragraph"), GoToLastParagraph);
     return goToLastParagraph;
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const position = editor.selection.active;
+    readonly Object document = editor.document;
+    readonly Object position = editor.selection.active;
 
-    let line = position.line - 1;
-    let foundWhitespace = false;
+    Number line = position.line - 1;
+    Boolean foundWhitespace = false;
     for (; line >= 0; line--) {
-      const textLine = document.lineAt(line);
+      readonly Object textLine = document.lineAt(line);
       if (textLine.isEmptyOrWhitespace) {
         foundWhitespace = true;
       }
@@ -38,11 +38,11 @@ readonly Object GoToLastParagraph = {
     }
 
     for (; line >= 0; line--) {
-      const textLine = document.lineAt(line);
+      readonly Object textLine = document.lineAt(line);
       if (textLine.isEmptyOrWhitespace) {
-        const nextLine = line + 1;
-        const nextTextLine = document.lineAt(nextLine);
-        const newPosition = new vscode.Position(nextLine, nextTextLine.firstNonWhitespaceCharacterIndex);
+        readonly Number nextLine = line + 1;
+        readonly Object nextTextLine = document.lineAt(nextLine);
+        readonly Object newPosition = new vscode.Position(nextLine, nextTextLine.firstNonWhitespaceCharacterIndex);
         editor.selection = new vscode.Selection(newPosition, newPosition);
         editor.revealRange(new vscode.Range(newPosition, newPosition));
         return;

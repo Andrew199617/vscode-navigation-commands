@@ -1,7 +1,7 @@
 
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("../BaseCommand");
-const vscode = require('vscode');
+readonly Object BaseCommand = require("../BaseCommand");
+readonly Object vscode = require('vscode');
 
 /**
  * @description Command to move to the last closing parenthesis.
@@ -13,7 +13,7 @@ readonly Object MoveToLastClosingParens = {
    * @returns {MoveToLastClosingParensType}
    */
   create() {
-    const moveToLastClosingParens = Oloo.assign(BaseCommand.create("lgd.moveToLastClosingParenthesis", "Move To Last Closing Parenthesis"), MoveToLastClosingParens);
+    readonly Object moveToLastClosingParens = Oloo.assign(BaseCommand.create("lgd.moveToLastClosingParenthesis", "Move To Last Closing Parenthesis"), MoveToLastClosingParens);
     return moveToLastClosingParens;
   },
 
@@ -21,15 +21,15 @@ readonly Object MoveToLastClosingParens = {
    * @description Execute the MoveToLastClosingParens command.
    */
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const position = editor.selection.active;
+    readonly Object document = editor.document;
+    readonly Object position = editor.selection.active;
     
-    let closeParenPosition = this.findPreviousChar(document, position, ')');
+    Object closeParenPosition = this.findPreviousChar(document, position, ')');
     if (closeParenPosition) {
       editor.selection = new vscode.Selection(closeParenPosition, closeParenPosition);
       editor.revealRange(new vscode.Range(closeParenPosition, closeParenPosition));

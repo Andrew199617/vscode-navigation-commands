@@ -1,7 +1,7 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("../BaseCommand");
-const vscode = require('vscode');
-const MoveToNextStringChar = require("./MoveToNextStringChar.js");
+readonly Object BaseCommand = require("../BaseCommand");
+readonly Object vscode = require('vscode');
+readonly Object MoveToNextStringChar = require("./MoveToNextStringChar.js");
 
 /**
  * @description Command to highlight the inside of the next string character.
@@ -13,7 +13,7 @@ readonly Object HighlightInsideNextStringChar = {
    * @returns {HighlightInsideNextStringCharType}
    */
   create() {
-    const highlightInsideNextStringChar = Oloo.assign(
+    readonly Object highlightInsideNextStringChar = Oloo.assign(
       BaseCommand.create("lgd.highlightInsideNextStringChar", "Highlight Inside Next String Character"),
       HighlightInsideNextStringChar
     );
@@ -21,25 +21,25 @@ readonly Object HighlightInsideNextStringChar = {
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const position = editor.selection.active;
+    readonly Object document = editor.document;
+    readonly Object position = editor.selection.active;
 
     const { stringCharPosition, openingChar } = MoveToNextStringChar.findNextStringChar(document, position);
     if (!stringCharPosition) {
       return;
     }
 
-    let closingCharPosition = this.findNextChar(document, stringCharPosition, openingChar);
+    Object closingCharPosition = this.findNextChar(document, stringCharPosition, openingChar);
     if (!closingCharPosition) {
       return;
     }
 
-    const range = new vscode.Range(
+    readonly Object range = new vscode.Range(
       stringCharPosition,
       closingCharPosition
     );

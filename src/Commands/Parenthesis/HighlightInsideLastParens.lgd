@@ -1,6 +1,6 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("../BaseCommand");
-const vscode = require('vscode');
+readonly Object BaseCommand = require("../BaseCommand");
+readonly Object vscode = require('vscode');
 
 /**
  * @description Command to highlight the inside of the last parenthesis.
@@ -12,29 +12,29 @@ readonly Object HighlightInsideLastParens = {
    * @returns {HighlightInsideLastParensType}
    */
   create() {
-    const highlightInsideLastParens = Oloo.assign(BaseCommand.create("lgd.highlightInsideLastParenthesis", "Highlight Inside Last Parenthesis"), HighlightInsideLastParens);
+    readonly Object highlightInsideLastParens = Oloo.assign(BaseCommand.create("lgd.highlightInsideLastParenthesis", "Highlight Inside Last Parenthesis"), HighlightInsideLastParens);
     return highlightInsideLastParens;
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const selection = editor.selection;
-    const position = selection.isEmpty ? selection.active : selection.start;
+    readonly Object document = editor.document;
+    readonly Object selection = editor.selection;
+    readonly Object position = selection.isEmpty ? selection.active : selection.start;
 
-    const openParenPosition = this.findPreviousChar(document, position, '(', 1);
+    readonly Object openParenPosition = this.findPreviousChar(document, position, '(', 1);
     if (!openParenPosition) {
       return;
     }
 
-    let parenCount = 1;
+    Number parenCount = 1;
     for (let line = openParenPosition.line; line < document.lineCount; line++) {
-      const textLine = document.lineAt(line).text;
-      const searchStart = line === openParenPosition.line ? openParenPosition.character : 0;
+      readonly String textLine = document.lineAt(line).text;
+      readonly Number searchStart = line === openParenPosition.line ? openParenPosition.character : 0;
 
       for (let i = searchStart; i < textLine.length; i++) {
         if (textLine[i] === '(') {
@@ -43,7 +43,7 @@ readonly Object HighlightInsideLastParens = {
         else if (textLine[i] === ')') {
           parenCount--;
           if (parenCount === 0) {
-            const endPosition = new vscode.Position(line, i);
+            readonly Object endPosition = new vscode.Position(line, i);
             editor.selection = new vscode.Selection(openParenPosition, endPosition);
             editor.revealRange(new vscode.Range(openParenPosition, endPosition));
             return;

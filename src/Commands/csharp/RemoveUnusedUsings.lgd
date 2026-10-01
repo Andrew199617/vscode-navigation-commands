@@ -1,6 +1,6 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require('../BaseCommand');
-const vscode = require('vscode');
+readonly Object BaseCommand = require('../BaseCommand');
+readonly Object vscode = require('vscode');
 
 /**
  * @description Command to trigger C# IDE0005 cleanup (remove unused usings) using Organize Imports.
@@ -12,12 +12,12 @@ readonly Object RemoveUnusedUsings = {
    * @returns {RemoveUnusedUsingsType}
    */
   create(String commandName = 'lgd.removeUnused', String title = 'Remove Unused Usings (C#)') {
-    const removeUnused = Oloo.assign(BaseCommand.create(commandName, title), RemoveUnusedUsings);
+    readonly Object removeUnused = Oloo.assign(BaseCommand.create(commandName, title), RemoveUnusedUsings);
     return removeUnused;
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) return;
 
     // Only act for C# files
@@ -29,7 +29,7 @@ readonly Object RemoveUnusedUsings = {
     // Prefer executing built-in organize imports which triggers IDE0005 (remove unused usings)
     try {
       // Try the official command first
-      const organized = await vscode.commands.executeCommand('editor.action.organizeImports');
+      readonly Object organized = await vscode.commands.executeCommand('editor.action.organizeImports');
       // Some C# extensions also expose csharp-specific organize command; we attempt as fallback
       await vscode.commands.executeCommand('csharp.organizeImports');
       // Save document if auto-save is disabled to persist fixes

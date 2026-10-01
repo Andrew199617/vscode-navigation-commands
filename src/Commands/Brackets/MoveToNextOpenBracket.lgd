@@ -1,7 +1,7 @@
 
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("../BaseCommand");
-const vscode = require('vscode');
+readonly Object BaseCommand = require("../BaseCommand");
+readonly Object vscode = require('vscode');
 
 /**
  * @description Command to move to the next opening bracket.
@@ -13,20 +13,20 @@ readonly Object MoveToNextOpenBracket = {
    * @returns {MoveToNextOpenBracketType}
    */
   create() {
-    const moveToNextOpenBracket = Oloo.assign(BaseCommand.create("lgd.moveToNextOpenBracket", "Move To Next Opening Bracket"), MoveToNextOpenBracket);
+    readonly Object moveToNextOpenBracket = Oloo.assign(BaseCommand.create("lgd.moveToNextOpenBracket", "Move To Next Opening Bracket"), MoveToNextOpenBracket);
     return moveToNextOpenBracket;
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const position = editor.selection.active;
+    readonly Object document = editor.document;
+    readonly Object position = editor.selection.active;
     
-    let openBracketPosition = this.findNextChar(document, position, '{', 1);
+    Object openBracketPosition = this.findNextChar(document, position, '{', 1);
     if (openBracketPosition) {
       editor.selection = new vscode.Selection(openBracketPosition, openBracketPosition);
       editor.revealRange(new vscode.Range(openBracketPosition, openBracketPosition));

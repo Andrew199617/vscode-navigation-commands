@@ -1,6 +1,6 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require('./BaseCommand');
-const vscode = require('vscode');
+readonly Object BaseCommand = require('./BaseCommand');
+readonly Object vscode = require('vscode');
 
 /**
  * @description Command to navigate to the next method in a class or object.
@@ -12,7 +12,7 @@ readonly Object GoToNextMethod = {
    * @returns {GoToNextMethodType}
    */
   create(String commandName = "lgd.goToNextMethod", String title = "Go To Next Method") {
-    const goToNextMethod = Oloo.assign(BaseCommand.create(commandName, title), GoToNextMethod);
+    readonly Object goToNextMethod = Oloo.assign(BaseCommand.create(commandName, title), GoToNextMethod);
 
     /**
      * The tab size of the currently opened file in VS Code.
@@ -29,17 +29,17 @@ readonly Object GoToNextMethod = {
  */
   getTabSize() {
     // Get the active text editor
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
 
     if (editor) {
       // Retrieve tabSize from the active editor's options
-      const editorTabSize = editor.options.tabSize;
+      readonly Number editorTabSize = editor.options.tabSize;
       if (editorTabSize) {
         return editorTabSize;
       }
 
       // Alternatively, get language-specific tabSize settings
-      const languageTabSize = vscode.workspace.getConfiguration('editor', editor.document.uri).get('tabSize');
+      readonly Number languageTabSize = vscode.workspace.getConfiguration('editor', editor.document.uri).get('tabSize');
       if (languageTabSize) {
         return languageTabSize;
       }
@@ -50,15 +50,15 @@ readonly Object GoToNextMethod = {
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const position = editor.selection.active;
-    const currentLine = position.line;
-    const lines = document.getText().split('\n');
+    readonly Object document = editor.document;
+    readonly Object position = editor.selection.active;
+    readonly Number currentLine = position.line;
+    readonly Array lines = document.getText().split('\n');
 
     for (let i = currentLine + 1; i < lines.length; i++) {
       if (this.getMethod(lines[i], i)) {
@@ -80,9 +80,9 @@ readonly Object GoToNextMethod = {
    * @returns {boolean} Returns true if a method was found and navigation was successful, otherwise false.
    */
   getMethod(String line, Number i) {
-    const editor = vscode.window.activeTextEditor;
-    const lines = editor?.document?.getText().split('\n') || [];
-    const languageId = editor?.document?.languageId;
+    readonly Object editor = vscode.window.activeTextEditor;
+    readonly Array lines = editor?.document?.getText().split('\n') || [];
+    readonly String languageId = editor?.document?.languageId;
     if (languageId === 'csharp') {
       return this.getMethodCSharp(line, i, lines);
     }
@@ -92,15 +92,15 @@ readonly Object GoToNextMethod = {
 
   // JavaScript / TypeScript style method detection (enhanced)
   getMethodJavaScript(String line, Number i, Array lines) {
-    let tabIndented = new RegExp(`^ {${this.tabSize}}[\\w\\$]{1}`, 'm').test(line)
+    Boolean tabIndented = new RegExp(`^ {${this.tabSize}}[\\w\\$]{1}`, 'm').test(line)
       || new RegExp(`^\\t{1}[\\w\\$]{1}`, 'm').test(line);
-    const notIndented = /^[\\w\\$]{1}/m.test(line);
+    readonly Boolean notIndented = /^[\\w\\$]{1}/m.test(line);
 
     if (!tabIndented && !notIndented) {
       return false;
     }
 
-    const trimmedLine = line.trim();
+    readonly String trimmedLine = line.trim();
 
     // Common false positives
     if (/^(if|for|while|switch|else)\b/.test(trimmedLine)) {
@@ -108,10 +108,10 @@ readonly Object GoToNextMethod = {
     }
 
     // Also consider the next line to support Allman style where `{` is on the next line
-    const nextLine = (lines && lines[i + 1]) ? lines[i + 1].trim() : '';
-    const combined = trimmedLine + ' ' + nextLine;
+    readonly String nextLine = (lines && lines[i + 1]) ? lines[i + 1].trim() : '';
+    readonly String combined = trimmedLine + ' ' + nextLine;
 
-    const jsPatterns = [
+    readonly Array jsPatterns = [
       // function foo() {
       /^function\s+\w+\s*\([^)]*\)\s*\{/,
       // foo: function() {
@@ -123,8 +123,8 @@ readonly Object GoToNextMethod = {
     ];
 
     if (jsPatterns.some(r => r.test(trimmedLine) || r.test(combined))) {
-      const editor = vscode.window.activeTextEditor;
-      const newPosition = new vscode.Position(i, tabIndented ? this.tabSize : 0);
+      readonly Object editor = vscode.window.activeTextEditor;
+      readonly Object newPosition = new vscode.Position(i, tabIndented ? this.tabSize : 0);
       editor.selection = new vscode.Selection(newPosition, newPosition);
       editor.revealRange(new vscode.Range(newPosition, newPosition));
       return true;
@@ -139,12 +139,12 @@ readonly Object GoToNextMethod = {
     }
 
     // Accept any indentation depth (spaces or tabs)
-    const startsWithIdentifier = /^\s*[A-Za-z_]/.test(line);
+    readonly Boolean startsWithIdentifier = /^\s*[A-Za-z_]/.test(line);
     if (!startsWithIdentifier) {
       return false;
     }
 
-    const trimmedLine = line.trim();
+    readonly String trimmedLine = line.trim();
 
     // Exclude non-method constructs
     if (/^(if|for|foreach|while|switch|using|lock|else|catch|finally|return)\b/.test(trimmedLine)) {
@@ -161,11 +161,11 @@ readonly Object GoToNextMethod = {
     }
 
     // Combine current and next line to catch signatures where { or => is on next line
-    const nextLine = (lines && lines[i + 1]) ? lines[i + 1].trim() : '';
-    const combined = trimmedLine + ' ' + nextLine;
+    readonly String nextLine = (lines && lines[i + 1]) ? lines[i + 1].trim() : '';
+    readonly String combined = trimmedLine + ' ' + nextLine;
 
     // Return type (namespaces/generics/arrays allowed), name (optionally generic), then params
-    const csharpMethodRegex = new RegExp(
+    readonly Object csharpMethodRegex = new RegExp(
       '^(?:public|private|protected|internal)?' +
       '(?:\\s+(?:static|async|virtual|override|sealed|abstract|extern|unsafe|new|partial))*' +
       '\\s+[A-Za-z_][\\w<>\\[\\],\\.]*' + // return type
@@ -174,19 +174,19 @@ readonly Object GoToNextMethod = {
     );
 
     // Constructor pattern: modifiers + ClassName(params) { or =>
-    const csharpCtorRegex = new RegExp(
+    readonly Object csharpCtorRegex = new RegExp(
       '^(?:public|private|protected|internal)?' +
       '(?:\\s+(?:static|unsafe|new|partial))*' +
       '\\s*[A-Za-z_]\\w*' +
       '\\s*\\([^;{}]*\\)\\s*(?:\\{|=>)'
     );
 
-    const isMethod = csharpMethodRegex.test(trimmedLine) || csharpMethodRegex.test(combined) ||
+    readonly Boolean isMethod = csharpMethodRegex.test(trimmedLine) || csharpMethodRegex.test(combined) ||
       csharpCtorRegex.test(trimmedLine) || csharpCtorRegex.test(combined);
 
     if (isMethod) {
-      const editor = vscode.window.activeTextEditor;
-      const newPosition = new vscode.Position(i, line.match(/^\s*/)[0].length);
+      readonly Object editor = vscode.window.activeTextEditor;
+      readonly Object newPosition = new vscode.Position(i, line.match(/^\s*/)[0].length);
       editor.selection = new vscode.Selection(newPosition, newPosition);
       editor.revealRange(new vscode.Range(newPosition, newPosition));
       return true;

@@ -1,6 +1,6 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("../BaseCommand");
-const vscode = require('vscode');
+readonly Object BaseCommand = require("../BaseCommand");
+readonly Object vscode = require('vscode');
 
 /**
  * @description Command to highlight the inside of the last opening bracket.
@@ -12,29 +12,29 @@ readonly Object HighlightInsideLastBracket = {
    * @returns {HighlightInsideLastBracketType}
    */
   create() {
-    const highlightInsideLastBracket = Oloo.assign(BaseCommand.create("lgd.highlightInsideLastBracket", "Highlight Inside Last Bracket"), HighlightInsideLastBracket);
+    readonly Object highlightInsideLastBracket = Oloo.assign(BaseCommand.create("lgd.highlightInsideLastBracket", "Highlight Inside Last Bracket"), HighlightInsideLastBracket);
     return highlightInsideLastBracket;
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const selection = editor.selection;
-    const position = selection.isEmpty ? selection.active : selection.start;
+    readonly Object document = editor.document;
+    readonly Object selection = editor.selection;
+    readonly Object position = selection.isEmpty ? selection.active : selection.start;
 
-    let openBracketPosition = this.findPreviousChar(document, position, '{', 1);
+    Object openBracketPosition = this.findPreviousChar(document, position, '{', 1);
     if (!openBracketPosition) {
       return;
     }
 
-    let bracketCount = 1;
+    Number bracketCount = 1;
     for (let line = openBracketPosition.line; line < document.lineCount; line++) {
-      const textLine = document.lineAt(line).text;
-      const searchStart = line === openBracketPosition.line ? openBracketPosition.character : 0;
+      readonly String textLine = document.lineAt(line).text;
+      readonly Number searchStart = line === openBracketPosition.line ? openBracketPosition.character : 0;
 
       for (let i = searchStart; i < textLine.length; i++) {
         if (textLine[i] === '{') {
@@ -43,7 +43,7 @@ readonly Object HighlightInsideLastBracket = {
         else if (textLine[i] === '}') {
           bracketCount--;
           if (bracketCount === 0) {
-            const endPosition = new vscode.Position(line, i);
+            readonly Object endPosition = new vscode.Position(line, i);
             editor.selection = new vscode.Selection(openBracketPosition, endPosition);
             editor.revealRange(new vscode.Range(openBracketPosition, endPosition));
             return;

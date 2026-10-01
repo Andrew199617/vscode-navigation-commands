@@ -1,7 +1,7 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("../BaseCommand");
-const vscode = require('vscode');
-const MoveToLastStringChar = require("./MoveToLastStringChar.js");
+readonly Object BaseCommand = require("../BaseCommand");
+readonly Object vscode = require('vscode');
+readonly Object MoveToLastStringChar = require("./MoveToLastStringChar.js");
 
 /**
  * @description Command to highlight the inside of the last string character.
@@ -13,7 +13,7 @@ readonly Object HighlightInsideLastStringChar = {
    * @returns {HighlightInsideLastStringCharType}
    */
   create() {
-    const highlightInsideLastStringChar = Oloo.assign(
+    readonly Object highlightInsideLastStringChar = Oloo.assign(
       BaseCommand.create("lgd.highlightInsideLastStringChar", "Highlight Inside Last String Character"),
       HighlightInsideLastStringChar
     );
@@ -21,13 +21,13 @@ readonly Object HighlightInsideLastStringChar = {
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const position = editor.selection.active;
+    readonly Object document = editor.document;
+    readonly Object position = editor.selection.active;
 
     let { stringCharPosition, openingChar } = MoveToLastStringChar.findLastStringChar(document, position);
     if (!stringCharPosition) {
@@ -39,12 +39,12 @@ readonly Object HighlightInsideLastStringChar = {
       return;
     }
 
-    let closingCharPosition = this.findNextChar(document, stringCharPosition, openingChar);
+    Object closingCharPosition = this.findNextChar(document, stringCharPosition, openingChar);
     if (!closingCharPosition) {
       return;
     }
 
-    const range = new vscode.Range(
+    readonly Object range = new vscode.Range(
       new vscode.Position(stringCharPosition.line, stringCharPosition.character),
       closingCharPosition
     );

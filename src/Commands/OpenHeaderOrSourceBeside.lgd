@@ -1,7 +1,7 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require('./BaseCommand');
-const vscode = require('vscode');
-const fs = require('fs');
+readonly Object BaseCommand = require('./BaseCommand');
+readonly Object vscode = require('vscode');
+readonly Object fs = require('fs');
 
 /**
  * @description Open the counterpart C/C++ file (.h/.hpp <-> .cpp/.c/.cc/.cxx) to the active document beside, in preview, and auto-close it when selection changes away.
@@ -12,7 +12,7 @@ readonly Object OpenHeaderOrSourceBeside = {
    * @returns {typeof OpenHeaderOrSourceBeside}
    */
   create() {
-    const cmd = Oloo.assign(BaseCommand.create('lgd.openHeaderOrSourceBeside', 'Open Header/Source Beside (Preview)'), OpenHeaderOrSourceBeside);
+    readonly Object cmd = Oloo.assign(BaseCommand.create('lgd.openHeaderOrSourceBeside', 'Open Header/Source Beside (Preview)'), OpenHeaderOrSourceBeside);
     return cmd;
   },
 
@@ -20,23 +20,23 @@ readonly Object OpenHeaderOrSourceBeside = {
    * Execute command.
    */
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) { return; }
 
-    const document = editor.document;
-    const thisUri = document.uri;
+    readonly Object document = editor.document;
+    readonly Object thisUri = document.uri;
     if (thisUri.scheme !== 'file') { return; }
 
-    const counterpart = this._getCounterpartUri(thisUri);
+    readonly Object counterpart = this._getCounterpartUri(thisUri);
     if (!counterpart) {
       vscode.window.setStatusBarMessage('LGD: No counterpart header/source found', 2000);
       return;
     }
 
     try {
-      const doc = await vscode.workspace.openTextDocument(counterpart);
+      readonly Object doc = await vscode.workspace.openTextDocument(counterpart);
       // Show beside in preview so it disappears when unfocused/replaced
-      const shown = await vscode.window.showTextDocument(doc, { viewColumn: vscode.ViewColumn.Beside, preview: true, preserveFocus: true });
+      readonly Object shown = await vscode.window.showTextDocument(doc, { viewColumn: vscode.ViewColumn.Beside, preview: true, preserveFocus: true });
 
       // Auto-close when selection changes on the original editor
       this._attachAutoClose(thisUri, shown);
@@ -50,15 +50,15 @@ readonly Object OpenHeaderOrSourceBeside = {
    * @returns {vscode.Uri | null}
    */
   _getCounterpartUri(vscode.Uri uri) {
-    const file = uri.fsPath;
-    const lower = file.toLowerCase();
+    readonly String file = uri.fsPath;
+    readonly String lower = file.toLowerCase();
 
-    const headerExts = ['.h', '.hpp', '.hh', '.hxx'];
-    const sourceExts = ['.cpp', '.cc', '.cxx', '.c'];
+    readonly Array headerExts = ['.h', '.hpp', '.hh', '.hxx'];
+    readonly Array sourceExts = ['.cpp', '.cc', '.cxx', '.c'];
 
-    const matchExt = (exts) => exts.find(e => lower.endsWith(e));
-    const h = matchExt(headerExts);
-    const s = matchExt(sourceExts);
+    readonly Function matchExt = (exts) => exts.find(e => lower.endsWith(e));
+    readonly String h = matchExt(headerExts);
+    readonly String s = matchExt(sourceExts);
 
     /** @type {string[]} */
     let targets;
@@ -74,7 +74,7 @@ readonly Object OpenHeaderOrSourceBeside = {
     }
 
     for (const ext of targets) {
-      const candidatePath = stem + ext;
+      readonly String candidatePath = stem + ext;
       if (fs.existsSync(candidatePath)) {
         return vscode.Uri.file(candidatePath);
       }
@@ -94,10 +94,10 @@ readonly Object OpenHeaderOrSourceBeside = {
       this._listener = undefined;
     }
 
-    const closePreview = () => {
-      const previewPath = previewEditor?.document?.uri?.fsPath;
+    readonly Function closePreview = () => {
+      readonly String previewPath = previewEditor?.document?.uri?.fsPath;
       if (!previewPath) { return false; }
-      const previewVisibleEditor = vscode.window.visibleTextEditors.find(e => e.document.uri.fsPath === previewPath);
+      readonly Object previewVisibleEditor = vscode.window.visibleTextEditors.find(e => e.document.uri.fsPath === previewPath);
       if (previewVisibleEditor) {
         return vscode.window.showTextDocument(previewVisibleEditor.document, previewVisibleEditor.viewColumn || vscode.ViewColumn.Beside, false)
           .then(() => {
@@ -108,12 +108,12 @@ readonly Object OpenHeaderOrSourceBeside = {
       return false;
     };
 
-    const closeIfNeeded = () => {
-      const active = vscode.window.activeTextEditor;
+    readonly Function closeIfNeeded = () => {
+      readonly Object active = vscode.window.activeTextEditor;
       if (!active) { return; }
 
-      const previewDocPath = previewEditor?.document?.uri?.fsPath;
-      const activePath = active.document.uri.fsPath;
+      readonly String previewDocPath = previewEditor?.document?.uri?.fsPath;
+      readonly String activePath = active.document.uri.fsPath;
 
       // If preview becomes active, close it
       if (previewDocPath && activePath === previewDocPath) {
@@ -124,7 +124,7 @@ readonly Object OpenHeaderOrSourceBeside = {
 
       // If focus moved away from the original editor, close preview
       if (activePath !== originalUri.fsPath) {
-        const maybePromise = closePreview();
+        readonly Object maybePromise = closePreview();
         if (maybePromise && typeof maybePromise.then === 'function') {
           maybePromise.then(() => {
             if (this._listener) { try { this._listener.dispose(); } catch { } this._listener = undefined; }
@@ -136,8 +136,8 @@ readonly Object OpenHeaderOrSourceBeside = {
     };
 
     // Listen to selection changes and active editor changes
-    const selDisposable = vscode.window.onDidChangeTextEditorSelection(closeIfNeeded);
-    const activeDisposable = vscode.window.onDidChangeActiveTextEditor(closeIfNeeded);
+    readonly Object selDisposable = vscode.window.onDidChangeTextEditorSelection(closeIfNeeded);
+    readonly Object activeDisposable = vscode.window.onDidChangeActiveTextEditor(closeIfNeeded);
     this._listener = { dispose: () => { selDisposable.dispose(); activeDisposable.dispose(); } };
   }
 };

@@ -1,6 +1,6 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("../BaseCommand");
-const vscode = require('vscode');
+readonly Object BaseCommand = require("../BaseCommand");
+readonly Object vscode = require('vscode');
 
 /**
  * @description Command to move to the next string character (" or ' or `).
@@ -12,7 +12,7 @@ readonly Object MoveToNextStringChar = {
    * @returns {MoveToNextStringCharType}
    */
   create() {
-    const moveToNextStringChar = Oloo.assign(
+    readonly Object moveToNextStringChar = Oloo.assign(
       BaseCommand.create("lgd.moveToNextStringChar", "Move To Next String Character"),
       MoveToNextStringChar
     );
@@ -20,13 +20,13 @@ readonly Object MoveToNextStringChar = {
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const position = editor.selection.active;
+    readonly Object document = editor.document;
+    readonly Object position = editor.selection.active;
     
     const { stringCharPosition } = MoveToNextStringChar.findNextStringChar(document, position);
     if (stringCharPosition) {
@@ -43,10 +43,10 @@ readonly Object MoveToNextStringChar = {
    */
   findNextStringChar(vscode.TextDocument document, vscode.Position position) {
     // 34 = ", 39 = ', 96 = `
-    const chars = { 34: true, 39: true, 96: true };
+    readonly Object chars = { 34: true, 39: true, 96: true };
     for (let line = position.line; line < document.lineCount; line++) {
-      const textLine = document.lineAt(line).text;
-      const searchStart = line === position.line ? position.character : 0;
+      readonly String textLine = document.lineAt(line).text;
+      readonly Number searchStart = line === position.line ? position.character : 0;
 
       for (let i = searchStart; i < textLine.length; i++) {
         if (chars[textLine.charCodeAt(i)]) {

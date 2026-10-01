@@ -1,4 +1,4 @@
-const vscode = require('vscode');
+readonly Object vscode = require('vscode');
 
 /**
 * @description Helps Create an Object that can generate a Command for vscode.
@@ -11,7 +11,7 @@ readonly Object BaseCommand = {
   * @returns {BaseCommandType}
   */
   create(String commandName, String title) {
-    const baseCommand = Object.create(BaseCommand);
+    readonly Object baseCommand = Object.create(BaseCommand);
 
     /** @type {vscode.Command} */
     baseCommand.command = {
@@ -55,15 +55,15 @@ readonly Object BaseCommand = {
    */
   findNextChar(vscode.TextDocument document, vscode.Position position, String char, Number offset = 0) {
     if(position.character + 1 + offset > 0) {
-      const textLine = document.lineAt(position.line).text;
-      let closeBracketIndex = textLine.indexOf(char, position.character + 1 - offset);
+      readonly String textLine = document.lineAt(position.line).text;
+      Number closeBracketIndex = textLine.indexOf(char, position.character + 1 - offset);
       if (closeBracketIndex !== -1) {
         return new vscode.Position(position.line, Math.max(0, closeBracketIndex + offset));
       }    
     }
 
     for (let line = position.line + 1; line < document.lineCount; line++) {
-      const textLine = document.lineAt(line).text;
+      readonly String textLine = document.lineAt(line).text;
       closeBracketIndex = textLine.indexOf(char, 0);
 
       if (closeBracketIndex !== -1) {
@@ -85,16 +85,16 @@ readonly Object BaseCommand = {
    */
   findPreviousChar(vscode.TextDocument document, vscode.Position position, String char, Number offset = 0) {
     if(position.character - 1 + offset > 0) {
-      const textLine = document.lineAt(position.line).text;
-      const closeBracketIndex = textLine.lastIndexOf(char, position.character - 1 - offset);
+      readonly String textLine = document.lineAt(position.line).text;
+      readonly Number closeBracketIndex = textLine.lastIndexOf(char, position.character - 1 - offset);
       if (closeBracketIndex !== -1) {
         return new vscode.Position(position.line, Math.max(0, closeBracketIndex + offset));
       }
     }
     
     for (let line = position.line - 1; line >= 0; line--) {
-      const textLine = document.lineAt(line).text;
-      const closeBracketIndex = textLine.lastIndexOf(char, textLine.length);
+      readonly String textLine = document.lineAt(line).text;
+      readonly Number closeBracketIndex = textLine.lastIndexOf(char, textLine.length);
 
       if (closeBracketIndex !== -1) {
         return new vscode.Position(line, Math.max(0, closeBracketIndex + offset));

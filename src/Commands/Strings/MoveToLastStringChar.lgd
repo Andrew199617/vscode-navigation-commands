@@ -1,6 +1,6 @@
 const { Oloo } = require('@mavega/oloo');
-const BaseCommand = require("../BaseCommand");
-const vscode = require('vscode');
+readonly Object BaseCommand = require("../BaseCommand");
+readonly Object vscode = require('vscode');
 
 /**
  * @description Command to move to the last string character (" or ' or `).
@@ -12,7 +12,7 @@ readonly Object MoveToLastStringChar = {
    * @returns {MoveToLastStringCharType}
    */
   create() {
-    const moveToLastStringChar = Oloo.assign(
+    readonly Object moveToLastStringChar = Oloo.assign(
       BaseCommand.create("lgd.moveToLastStringChar", "Move To Last String Character"),
       MoveToLastStringChar
     );
@@ -20,13 +20,13 @@ readonly Object MoveToLastStringChar = {
   },
 
   async executeCommand() {
-    const editor = vscode.window.activeTextEditor;
+    readonly Object editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
 
-    const document = editor.document;
-    const position = editor.selection.active;
+    readonly Object document = editor.document;
+    readonly Object position = editor.selection.active;
     const { stringCharPosition } = MoveToLastStringChar.findLastStringChar(document, position);
 
     if (stringCharPosition) {
@@ -43,10 +43,10 @@ readonly Object MoveToLastStringChar = {
    */
   findLastStringChar(vscode.TextDocument document, vscode.Position position) {
     // 34 = ", 39 = ', 96 = `
-    const chars = { 34: true, 39: true, 96: true };
+    readonly Object chars = { 34: true, 39: true, 96: true };
     for (let line = position.line; line >= 0; line--) {
-      const textLine = document.lineAt(line).text;
-      const searchEnd = line === position.line ? position.character : textLine.length;
+      readonly String textLine = document.lineAt(line).text;
+      readonly Number searchEnd = line === position.line ? position.character : textLine.length;
 
       for (let i = searchEnd - 2; i >= 0; i--) {
         if (chars[textLine.charCodeAt(i)]) {
