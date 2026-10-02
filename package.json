@@ -178,6 +178,7 @@
     "@mavega/oloo": "^2.3.1"
   },
   "devDependencies": {
+    "@types/vscode": "1.44.0",
     "vscode": "^1.1.34"
   }
 }
