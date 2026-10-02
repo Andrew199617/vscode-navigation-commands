@@ -14,7 +14,7 @@
     "compile": "node scripts/compile-lgd.js",
     "vscode:prepublish": "npm run compile",
     "pretest": "node scripts/compile-lgd.js",
-    "test": "node --test tests/commands.test.js"
+    "test": "node --test tests/commands.test.js tests/metadata.test.js"
   },
   "categories": [
     "Programming Languages",
@@ -149,7 +149,7 @@
   },
   "engines": {
     "node": "20.18.0",
-    "vscode": "^1.1.0"
+    "vscode": "^1.44.0"
   },
   "keywords": [
     "lgd",
