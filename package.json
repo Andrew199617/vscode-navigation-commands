@@ -12,6 +12,7 @@
   "main": "index.lgd.js",
   "scripts": {
     "compile": "node scripts/compile-lgd.js",
+    "vscode:prepublish": "npm run compile",
     "pretest": "node scripts/compile-lgd.js",
     "test": "node --test tests/commands.test.js"
   },

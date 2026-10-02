@@ -8,8 +8,10 @@
 const { describe, it, before } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const Module = require('module');
+const { execSync } = require('child_process');
 
 const repoRoot = path.join(__dirname, '..');
 
@@ -222,6 +224,44 @@ describe('extension activation', () =>
         assert.equal(context.subscriptions.length, 23);
         assert.ok(vscodeMock.registered.has('lgd.goToNextParagraph'));
         assert.ok(vscodeMock.registered.has('lgd.goToNextMethod'));
+    });
+});
+
+describe('extension packaging', () =>
+{
+    it('builds the runtime files from a source-only checkout before packaging', () =>
+    {
+        const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'lgd-navigation-package-'));
+        try
+        {
+            for(const relative of ['package.json', 'scripts', 'src', 'index.lgd'])
+            {
+                fs.cpSync(path.join(repoRoot, relative), path.join(directory, relative), {
+                    recursive: true,
+                    filter: (source) => !source.endsWith('.lgd.js')
+                });
+            }
+
+            execSync('npm run vscode:prepublish', {
+                cwd: directory,
+                env: {
+                    ...process.env,
+                    LGD_COMPILER_PATH: process.env.LGD_COMPILER_PATH
+                        || path.resolve(repoRoot, '..', 'js-syntax-extension', 'src', 'Compilers', 'LgdCompiler.js')
+                },
+                stdio: 'pipe'
+            });
+
+            for(const generated of listGeneratedFiles())
+            {
+                const relative = path.relative(repoRoot, generated);
+                assert.ok(fs.existsSync(path.join(directory, relative)), `missing packaged runtime: ${relative}`);
+            }
+        }
+        finally
+        {
+            fs.rmSync(directory, { recursive: true, force: true });
+        }
     });
 });
 
