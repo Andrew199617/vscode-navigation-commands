@@ -17,6 +17,10 @@ const FoldLevelKeepComments = {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return;
     const document = editor.document;
+    if (!['javascript', 'javascriptreact', 'typescript', 'typescriptreact'].includes(document.languageId)) {
+      vscode.window.showInformationMessage('Keep Comments folding supports JavaScript, JSX, TypeScript, and TSX.');
+      return;
+    }
     const version = document.version;
     try {
       const ranges = await vscode.commands.executeCommand('vscode.executeFoldingRangeProvider', document.uri);

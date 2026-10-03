@@ -99,7 +99,7 @@ To assign the commands provided by this extension to keyboard shortcuts, follow 
 
 ### Fold Levels 0–7 (Keep Comments)
 - **Command IDs:** `lgd.foldLevel0KeepComments` through `lgd.foldLevel7KeepComments`
-- **Description:** Folds code at the selected VS Code nesting level while keeping comments and documentation open. Levels 0 and 1 both fold outermost code, including exported classes, functions, and objects; levels 2–7 match VS Code’s deeper nesting levels. Assign your own shortcuts.
+- **Description:** Folds JavaScript, JSX, TypeScript, or TSX code at the selected VS Code nesting level while keeping comments and documentation open. Levels 0 and 1 both fold outermost code, including exported classes, functions, and objects; levels 2–7 match VS Code’s deeper nesting levels. Assign your own shortcuts.
 
 ## Other Extensions by Learn Game Development
 

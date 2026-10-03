@@ -1,25 +1,32 @@
-const acorn = require('acorn');
+const { parse } = require('@babel/parser');
 
 /**
- * Find real JavaScript comments, including when indentation folding supplies no
- * range kinds. A tokenizer distinguishes comments from strings, regex literals,
- * and template text. On incomplete syntax, retain only comments already read.
+ * Find real JS/TS comments when indentation folding supplies no range kinds.
+ * Parsing in the document's syntax mode distinguishes comments from strings,
+ * regex literals, template text and JSX text (including JSX attribute values).
+ * Do not use parser recovery: malformed syntax can make a slash or JSX boundary
+ * ambiguous. Return null in that case so untyped ranges remain expanded; only
+ * explicit non-comment provider kinds are safe to fold without classification.
  */
 function javascriptComments(text, languageId) {
-  if (languageId !== 'javascript') return [];
-  const comments = [];
-  try {
-    const tokens = acorn.tokenizer(text, {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      allowHashBang: true,
-      onComment: comments
-    });
-    while (tokens.getToken().type.label !== 'eof') { /* Scan through the file. */ }
-  } catch {
-    // Never guess that the remainder of an incomplete document is a comment.
+  let plugins;
+  switch (languageId) {
+    case 'javascript': plugins = []; break;
+    case 'javascriptreact': plugins = ['jsx']; break;
+    case 'typescript': plugins = ['typescript', 'decorators-legacy']; break;
+    case 'typescriptreact': plugins = ['typescript', 'jsx', 'decorators-legacy']; break;
+    default: return [];
   }
-  return comments;
+  try {
+    return parse(text, {
+      sourceType: 'unambiguous',
+      plugins,
+      // We only need File.comments, not copies attached to every AST node.
+      attachComment: false
+    }).comments;
+  } catch {
+    return null;
+  }
 }
 
 /** Prefix counts make each comment-only range check constant-time. */
@@ -52,7 +59,7 @@ function selectCodeFolds(ranges, { level, text, languageId, blockedLines = [] })
   const requestedDepth = level === 0 ? 1 : level;
   const lines = text.split(/\r\n|\r|\n/);
   const comments = javascriptComments(text, languageId);
-  const nonCommentLines = comments.length ? nonCommentLineCounts(text, comments) : null;
+  const nonCommentLines = comments?.length ? nonCommentLineCounts(text, comments) : null;
   const sorted = (ranges || []).filter(range =>
     Number.isInteger(range.start) && Number.isInteger(range.end) &&
     range.start >= 0 && range.end > range.start && range.end < lines.length
@@ -71,6 +78,7 @@ function selectCodeFolds(ranges, { level, text, languageId, blockedLines = [] })
     parents.push(range);
     if (depth !== requestedDepth || blockedLines.some(line => line >= range.start && line <= range.end)) continue;
     if (range.kind === 1 || range.kind === 'comment' || range.kind?.value === 'comment') continue;
+    if (comments === null && range.kind == null) continue;
     if (nonCommentLines && nonCommentLines[range.end + 1] === nonCommentLines[range.start]) continue;
     selected.push(range.start);
   }

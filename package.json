@@ -154,42 +154,50 @@
       {
         "command": "lgd.foldLevel0KeepComments",
         "title": "Fold Level 0 (Outermost, Keep Comments)",
-        "category": "LGD"
+        "category": "LGD",
+        "enablement": "editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/"
       },
       {
         "command": "lgd.foldLevel1KeepComments",
         "title": "Fold Level 1 (Keep Comments)",
-        "category": "LGD"
+        "category": "LGD",
+        "enablement": "editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/"
       },
       {
         "command": "lgd.foldLevel2KeepComments",
         "title": "Fold Level 2 (Keep Comments)",
-        "category": "LGD"
+        "category": "LGD",
+        "enablement": "editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/"
       },
       {
         "command": "lgd.foldLevel3KeepComments",
         "title": "Fold Level 3 (Keep Comments)",
-        "category": "LGD"
+        "category": "LGD",
+        "enablement": "editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/"
       },
       {
         "command": "lgd.foldLevel4KeepComments",
         "title": "Fold Level 4 (Keep Comments)",
-        "category": "LGD"
+        "category": "LGD",
+        "enablement": "editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/"
       },
       {
         "command": "lgd.foldLevel5KeepComments",
         "title": "Fold Level 5 (Keep Comments)",
-        "category": "LGD"
+        "category": "LGD",
+        "enablement": "editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/"
       },
       {
         "command": "lgd.foldLevel6KeepComments",
         "title": "Fold Level 6 (Keep Comments)",
-        "category": "LGD"
+        "category": "LGD",
+        "enablement": "editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/"
       },
       {
         "command": "lgd.foldLevel7KeepComments",
         "title": "Fold Level 7 (Keep Comments)",
-        "category": "LGD"
+        "category": "LGD",
+        "enablement": "editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/"
       }
     ]
   },
@@ -221,8 +229,8 @@
   "author": "Learn Game Development",
   "license": "MIT",
   "dependencies": {
-    "@mavega/oloo": "^2.3.1",
-    "acorn": "^8.18.0"
+    "@babel/parser": "^7.29.9",
+    "@mavega/oloo": "^2.3.1"
   },
   "devDependencies": {
     "vscode": "^1.1.34"

@@ -4,6 +4,7 @@ const Module = require('node:module');
 const originalLoad = Module._load;
 const calls = [];
 const warnings = [];
+const information = [];
 const vscode = {window:{},commands:{}};
 const commandPath = require.resolve('../../src/Commands/Folding/FoldLevelKeepComments');
 const basePath = require.resolve('../../src/Commands/BaseCommand');
@@ -22,10 +23,11 @@ try {
 }
 let editor;
 beforeEach(() => {
- calls.length=0; warnings.length=0;
+ calls.length=0; warnings.length=0; information.length=0;
  editor={document:{uri:'file:///example.js',version:1,isClosed:false,languageId:'javascript',getText:()=> '/** docs\n */\nfunction run() {\n  work();\n}\n'},selections:[{start:{line:5}}]};
  vscode.window.activeTextEditor=editor;
  vscode.window.showWarningMessage=message=>warnings.push(message);
+ vscode.window.showInformationMessage=message=>information.push(message);
  vscode.commands.executeCommand=async (id,args)=>{calls.push([id,args]);if(id==='vscode.executeFoldingRangeProvider')return [{start:0,end:1,kind:1},{start:2,end:3}];};
 });
 test('folds exact code lines idempotently without moving selection or unfolding', async()=> {
@@ -54,4 +56,23 @@ test('level 0 invokes the same outermost code folds as level 1', async()=> {
 test('loading command mocks restores the module loader and original cache',()=> {
  assert.equal(Module._load,originalLoad);
  for (const [path,cached] of previousCache) assert.equal(require.cache[path],cached);
+});
+
+test('unsupported languages are explicitly disabled rather than folding untyped docs',async()=> {
+ for(const language of ['csharp','c','cpp','python','plaintext']) {
+  editor.document.languageId=language;
+  await FoldLevel.create(1).executeCommand();
+ }
+ assert.deepEqual(calls,[]);
+ assert.equal(information.length,5);
+});
+test('an active selection endpoint inside a fold stays expanded',async()=> {
+ editor.selections=[{start:{line:0},active:{line:3}}];
+ await FoldLevel.create(1).executeCommand();
+ assert.equal(calls.length,1);
+});
+test('folding commands are enabled only for supported JavaScript-family editors',()=> {
+ const commands=require('../../package.json').contributes.commands.filter(c=>c.command.startsWith('lgd.foldLevel'));
+ assert.equal(commands.length,8);
+ for(const command of commands)assert.equal(command.enablement,'editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/');
 });

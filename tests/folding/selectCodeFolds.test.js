@@ -47,9 +47,9 @@ test('inline comment at code start does not remove a valid code region', () => {
  assert.deepEqual(selectCodeFolds([{start:0,end:1}],{level:1,text,languageId:'javascript'}),[0]);
 });
 test('typed comments in other languages are preserved without JS parsing', () => assert.deepEqual(choose(1,{languageId:'csharp'}),[3,16,21]));
-test('malformed JavaScript never classifies unscanned remainder as comments', () => {
+test('malformed JavaScript leaves untyped ranges expanded', () => {
  const text='"unterminated\n/** could be text\nvalue\n';
- assert.deepEqual(selectCodeFolds([{start:1,end:2}],{level:1,text,languageId:'javascript'}),[1]);
+ assert.deepEqual(selectCodeFolds([{start:1,end:2}],{level:1,text,languageId:'javascript'}),[]);
 });
 test('undefined provider result does nothing', () => assert.deepEqual(selectCodeFolds(undefined,{level:1,text:source,languageId:'javascript'}),[]));
 test('null or empty provider result does nothing', () => {assert.deepEqual(choose(1,{},null),[]);assert.deepEqual(choose(1,{},[]),[]);});
@@ -95,3 +95,91 @@ test('nested regions sharing an end line keep their correct depth', () => {
  assert.deepEqual(choose(2,{languageId:'plaintext'},ranges),[2]);
  assert.deepEqual(choose(3,{languageId:'plaintext'},ranges),[4]);
 });
+
+for (const languageId of ['javascript', 'javascriptreact', 'typescript', 'typescriptreact']) {
+ test(`${languageId}: untyped documentation stays expanded at levels 0–7`, () => {
+  const untypedRanges = ranges.map(({start, end}) => ({start, end}));
+  const expected = [[3,16,21], [3,16,21], [7,12,17], [8], [], [], [], []];
+  expected.forEach((starts, level) => {
+   assert.deepEqual(choose(level, {languageId}, untypedRanges), starts);
+  });
+ });
+ test(`${languageId}: syntax errors do not guess untyped folds are code`, () => {
+  const text = [
+   '/** docs before the error', ' * keep readable', ' */',
+   'const broken = ;',
+   '/** docs after the error', ' * keep readable', ' */',
+   '// #region labeled code', 'work();', '// #endregion'
+  ].join('\n');
+  const input = [
+   {start:0, end:2}, {start:4, end:6},
+   {start:7, end:9, kind:{value:'region'}}
+  ];
+  assert.deepEqual(selectCodeFolds(input, {level:1, text, languageId}), [7]);
+  input[0].kind = comment;
+  assert.deepEqual(selectCodeFolds(input, {level:1, text, languageId}), [7]);
+ });
+}
+
+test('TypeScript annotations, generics, assertions and decorators preserve real comments', () => {
+ const text = [
+  'type Result<T> = { value: T };',
+  'const number = <number>1;',
+  '@sealed',
+  'class Example<T> {',
+  '  /** Method documentation', '   * Keep readable', '   */',
+  '  run(value: T): Result<T> {', '    return { value };', '  }', '}'
+ ].join('\n');
+ const input = [{start:3, end:9}, {start:4, end:6}, {start:7, end:8}];
+ assert.deepEqual(selectCodeFolds(input, {level:1, text, languageId:'typescript'}), [3]);
+ assert.deepEqual(selectCodeFolds(input, {level:2, text, languageId:'typescript'}), [7]);
+});
+
+for (const languageId of ['typescript', 'typescriptreact']) {
+ test(`${languageId}: strings, regex and template text do not hide later real comments`, () => {
+  const text = [
+   'const quoted: string = "/* not a comment */ // neither";',
+   'const pattern: RegExp = /[/*]+/;',
+   'const value: string = `',
+   '/** template text', ' * not a comment', ' */', '`;',
+   '/** Real documentation', ' * Keep readable', ' */',
+   'function run(input: string): string {', '  return input;', '}'
+  ].join('\n');
+  const input = [{start:3, end:5}, {start:7, end:9}, {start:10, end:11}];
+  assert.deepEqual(selectCodeFolds(input, {level:1, text, languageId}), [3,10]);
+ });
+ test(`${languageId}: comments inside typed template expressions are recognized`, () => {
+  const text = [
+   'const value: string = `${',
+   '/** Real comment', ' * inside expression', ' */',
+   '(input as string)', '}`;'
+  ].join('\n');
+  assert.deepEqual(selectCodeFolds([{start:1, end:3}], {level:1, text, languageId}), []);
+ });
+}
+
+for (const languageId of ['javascriptreact', 'typescriptreact']) {
+ test(`${languageId}: JSX text and attributes remain foldable beside expression comments`, () => {
+  const text = [
+   languageId === 'typescriptreact' ? 'const value: string = "text";' : 'const value = "text";',
+   'const view = <Panel label="',
+   '/** attribute text', ' * not a comment', ' */', '">',
+   '/** raw JSX text', ' * not a comment', ' */',
+   '// raw JSX line text', '// still not a comment',
+   '{', '/** Real expression comment', ' * Keep readable', ' */', 'value', '}',
+   '</Panel>;',
+   '// Real line comment', '// Keep readable'
+  ].join('\n');
+  const input = [
+   {start:2, end:4}, {start:6, end:8}, {start:9, end:10},
+   {start:12, end:14}, {start:18, end:19}
+  ];
+  assert.deepEqual(selectCodeFolds(input, {level:1, text, languageId}), [2,6,9]);
+ });
+ test(`${languageId}: malformed JSX never guesses comment-like text is code`, () => {
+  const text = [
+   'const view = <Panel>', '/** ambiguous JSX text', ' * incomplete element', ' */'
+  ].join('\n');
+  assert.deepEqual(selectCodeFolds([{start:1, end:3}], {level:1, text, languageId}), []);
+ });
+}
