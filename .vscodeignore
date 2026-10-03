@@ -9,3 +9,5 @@ typings/
 tests/
 coverage/
 .github/
+AGENTS.md
+scripts/run-vscode-tests.js
