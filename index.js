@@ -1,3 +1,4 @@
+const FoldLevelKeepComments = require('./src/Commands/Folding/FoldLevelKeepComments');
 const GoToNextParagraph = require('./src/Commands/GoToNextParagraph.js');
 const GoToLastParagraph = require('./src/Commands/GoToLastParagraph.js');
 
@@ -28,6 +29,10 @@ const RemoveUnusedUsings = require('./src/Commands/csharp/RemoveUnusedUsings.js'
 const OpenHeaderOrSourceBeside = require('./src/Commands/OpenHeaderOrSourceBeside.js');
 
 function activate(context) {
+    for (let level = 1; level <= 7; level++) {
+        context.subscriptions.push(FoldLevelKeepComments.create(level).createCommand());
+    }
+
     const goNextParagraphCommand = GoToNextParagraph.create().createCommand();
     const goLastParagraphCommand = GoToLastParagraph.create().createCommand();
     context.subscriptions.push(goLastParagraphCommand);

@@ -1,7 +1,7 @@
 {
   "name": "vscode-navigation-commands",
   "displayName": "Keyboard Navigation Commands",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "icon": "LGDLogo.png",
   "publisher": "learn-game-development",
   "description": "Commands that you can bind to a keyboard shortcut to help with navigating a file. For example, moving to the next or previous Paragraph, word, WORD, line, character, or more.",
@@ -11,7 +11,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "jest --config ./tests/jest.config.js"
+    "test": "npm run test:folding",
+    "test:folding": "node --test tests/folding/*.test.js"
   },
   "categories": [
     "Programming Languages",
@@ -21,9 +22,16 @@
   "activationEvents": [
     "onLanguage:javascript",
     "onLanguage:typescript",
-  "onLanguage:csharp",
-  "onLanguage:c",
-  "onLanguage:cpp"
+    "onLanguage:csharp",
+    "onLanguage:c",
+    "onLanguage:cpp",
+    "onCommand:lgd.foldLevel1KeepComments",
+    "onCommand:lgd.foldLevel2KeepComments",
+    "onCommand:lgd.foldLevel3KeepComments",
+    "onCommand:lgd.foldLevel4KeepComments",
+    "onCommand:lgd.foldLevel5KeepComments",
+    "onCommand:lgd.foldLevel6KeepComments",
+    "onCommand:lgd.foldLevel7KeepComments"
   ],
   "contributes": {
     "commands": [
@@ -141,12 +149,47 @@
         "command": "lgd.openHeaderOrSourceBeside",
         "title": "Open Header/Source Beside (Preview)",
         "category": "LGD"
+      },
+      {
+        "command": "lgd.foldLevel1KeepComments",
+        "title": "Fold Level 1 (Keep Comments)",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.foldLevel2KeepComments",
+        "title": "Fold Level 2 (Keep Comments)",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.foldLevel3KeepComments",
+        "title": "Fold Level 3 (Keep Comments)",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.foldLevel4KeepComments",
+        "title": "Fold Level 4 (Keep Comments)",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.foldLevel5KeepComments",
+        "title": "Fold Level 5 (Keep Comments)",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.foldLevel6KeepComments",
+        "title": "Fold Level 6 (Keep Comments)",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.foldLevel7KeepComments",
+        "title": "Fold Level 7 (Keep Comments)",
+        "category": "LGD"
       }
     ]
   },
   "engines": {
     "node": "20.18.0",
-    "vscode": "^1.1.0"
+    "vscode": "^1.85.0"
   },
   "keywords": [
     "lgd",
@@ -172,7 +215,8 @@
   "author": "Learn Game Development",
   "license": "MIT",
   "dependencies": {
-    "@mavega/oloo": "^2.3.1"
+    "@mavega/oloo": "^2.3.1",
+    "acorn": "^8.18.0"
   },
   "devDependencies": {
     "vscode": "^1.1.34"
