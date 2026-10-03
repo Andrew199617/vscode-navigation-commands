@@ -79,3 +79,19 @@ test('level 0 preserves export wrappers and their documentation', () => {
  assert.deepEqual(selectCodeFolds(ranges,{level:1,text,languageId:'javascript'}),[3]);
  assert.deepEqual(selectCodeFolds(ranges,{level:2,text,languageId:'javascript'}),[4]);
 });
+
+test('adjacent inclusive siblings stay at the same nesting depth', () => {
+ const ranges=[{start:0,end:2},{start:3,end:5},{start:6,end:8}];
+ assert.deepEqual(choose(1,{languageId:'plaintext'},ranges),[0,3,6]);
+ assert.deepEqual(choose(2,{languageId:'plaintext'},ranges),[]);
+});
+test('a shared inclusive boundary is overlapping, not an adjacent sibling', () => {
+ const ranges=[{start:0,end:3},{start:3,end:5},{start:6,end:8}];
+ assert.deepEqual(choose(1,{languageId:'plaintext'},ranges),[0,6]);
+});
+test('nested regions sharing an end line keep their correct depth', () => {
+ const ranges=[{start:0,end:8},{start:2,end:8},{start:4,end:8},{start:9,end:11}];
+ assert.deepEqual(choose(1,{languageId:'plaintext'},ranges),[0,9]);
+ assert.deepEqual(choose(2,{languageId:'plaintext'},ranges),[2]);
+ assert.deepEqual(choose(3,{languageId:'plaintext'},ranges),[4]);
+});

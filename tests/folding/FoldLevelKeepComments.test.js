@@ -5,9 +5,21 @@ const originalLoad = Module._load;
 const calls = [];
 const warnings = [];
 const vscode = {window:{},commands:{}};
-Module._load = function(name, ...rest) {return name === 'vscode' ? vscode : originalLoad.call(this, name, ...rest);};
-const FoldLevel = require('../../src/Commands/Folding/FoldLevelKeepComments');
-Module._load = originalLoad;
+const commandPath = require.resolve('../../src/Commands/Folding/FoldLevelKeepComments');
+const basePath = require.resolve('../../src/Commands/BaseCommand');
+const previousCache = new Map([commandPath, basePath].map(path => [path, require.cache[path]]));
+let FoldLevel;
+try {
+ for (const path of previousCache.keys()) delete require.cache[path];
+ Module._load = function(name, ...rest) {return name === 'vscode' ? vscode : originalLoad.call(this, name, ...rest);};
+ FoldLevel = require(commandPath);
+} finally {
+ Module._load = originalLoad;
+ for (const [path, cached] of previousCache) {
+  if (cached) require.cache[path] = cached;
+  else delete require.cache[path];
+ }
+}
 let editor;
 beforeEach(() => {
  calls.length=0; warnings.length=0;
@@ -37,4 +49,9 @@ test('all eight commands are contributed and activated with no default shortcuts
 test('level 0 invokes the same outermost code folds as level 1', async()=> {
  await FoldLevel.create(0).executeCommand(); await FoldLevel.create(1).executeCommand();
  assert.deepEqual(calls.filter(([id])=>id==='editor.fold'),[['editor.fold',{selectionLines:[2],levels:1,direction:'down'}],['editor.fold',{selectionLines:[2],levels:1,direction:'down'}]]);
+});
+
+test('loading command mocks restores the module loader and original cache',()=> {
+ assert.equal(Module._load,originalLoad);
+ for (const [path,cached] of previousCache) assert.equal(require.cache[path],cached);
 });
