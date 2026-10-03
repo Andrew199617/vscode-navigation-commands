@@ -76,3 +76,15 @@ test('folding commands are enabled only for supported JavaScript-family editors'
  assert.equal(commands.length,8);
  for(const command of commands)assert.equal(command.enablement,'editorLangId =~ /^(javascript|javascriptreact|typescript|typescriptreact)$/');
 });
+
+test('language-mode changes during provider request discard stale ranges',async()=> {
+ const original=vscode.commands.executeCommand;
+ vscode.commands.executeCommand=async(...args)=> {
+  const ranges=await original(...args);
+  editor.document.languageId='typescript';
+  return ranges;
+ };
+ await FoldLevel.create(1).executeCommand();
+ assert.equal(editor.document.version,1);
+ assert.equal(calls.length,1);
+});
