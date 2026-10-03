@@ -48,6 +48,8 @@ function nonCommentLineCounts(text, comments) {
  * selector independent of the extension host for unit tests.
  */
 function selectCodeFolds(ranges, { level, text, languageId, blockedLines = [] }) {
+  // Level 0 is an explicit outermost alias; levels 1–7 keep VS Code numbering.
+  const requestedDepth = level === 0 ? 1 : level;
   const lines = text.split(/\r\n|\r|\n/);
   const comments = javascriptComments(text, languageId);
   const nonCommentLines = comments.length ? nonCommentLineCounts(text, comments) : null;
@@ -67,7 +69,7 @@ function selectCodeFolds(ranges, { level, text, languageId, blockedLines = [] })
     if (parents.length && range.end > parents[parents.length - 1].end) continue;
     const depth = parents.length + 1;
     parents.push(range);
-    if (depth !== level || blockedLines.some(line => line >= range.start && line <= range.end)) continue;
+    if (depth !== requestedDepth || blockedLines.some(line => line >= range.start && line <= range.end)) continue;
     if (range.kind === 1 || range.kind === 'comment' || range.kind?.value === 'comment') continue;
     if (nonCommentLines && nonCommentLines[range.end + 1] === nonCommentLines[range.start]) continue;
     selected.push(range.start);

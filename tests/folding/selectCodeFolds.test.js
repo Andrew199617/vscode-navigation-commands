@@ -67,3 +67,15 @@ test('Unicode JavaScript line separators do not shift editor comment lines', () 
  const text='/** docs\u2028still same editor line\n * readable\n */\nfunction run() {\n  work();\n}\n';
  assert.deepEqual(selectCodeFolds([{start:0,end:2},{start:3,end:4}],{level:1,text,languageId:'javascript'}),[3]);
 });
+
+test('level 0 aliases outermost without shifting levels 1–7', () => {
+ assert.deepEqual(choose(0),[3,16,21]); assert.deepEqual(choose(0),choose(1));
+ assert.deepEqual(choose(2),[7,12,17]); assert.deepEqual(choose(3),[8]);
+});
+test('level 0 preserves export wrappers and their documentation', () => {
+ const text='/** Export docs\n * Keep readable\n */\nexport default {\n  run() {\n    work();\n  }\n};\n';
+ const ranges=[{start:0,end:2,kind:1},{start:3,end:6},{start:4,end:5}];
+ assert.deepEqual(selectCodeFolds(ranges,{level:0,text,languageId:'javascript'}),[3]);
+ assert.deepEqual(selectCodeFolds(ranges,{level:1,text,languageId:'javascript'}),[3]);
+ assert.deepEqual(selectCodeFolds(ranges,{level:2,text,languageId:'javascript'}),[4]);
+});

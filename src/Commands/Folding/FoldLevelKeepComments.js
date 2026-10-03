@@ -6,7 +6,7 @@ const FoldLevelKeepComments = {
   create(level) {
     const command = BaseCommand.create(
       `lgd.foldLevel${level}KeepComments`,
-      `Fold Level ${level} (Keep Comments)`
+      level === 0 ? 'Fold Level 0 (Outermost, Keep Comments)' : `Fold Level ${level} (Keep Comments)`
     );
     Object.assign(command, FoldLevelKeepComments);
     command.level = level;

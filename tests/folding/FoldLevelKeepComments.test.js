@@ -28,8 +28,13 @@ test('switching editor during provider request does not fold new editor',async()
 test('closed documents do not fold',async()=>{editor.document.isClosed=true;await FoldLevel.create(1).executeCommand();assert.equal(calls.length,1);});
 test('cursor inside selected fold is excluded like native fold level',async()=>{editor.selections=[{start:{line:3}}];await FoldLevel.create(1).executeCommand();assert.equal(calls.length,1);});
 test('provider failures are reported without fallback folding',async()=>{vscode.commands.executeCommand=async()=>{throw new Error('provider failed');};await FoldLevel.create(1).executeCommand();assert.deepEqual(warnings,['Could not fold level 1: provider failed']);});
-test('all seven commands are contributed and activated with no default shortcuts',()=>{
+test('all eight commands are contributed and activated with no default shortcuts',()=>{
  const manifest=require('../../package.json');
- for(let level=1;level<=7;level++){const command=FoldLevel.create(level);assert.ok(manifest.contributes.commands.some(({command:id})=>id===command.commandName));assert.ok(manifest.activationEvents.includes('onCommand:'+command.commandName));}
+ for(let level=0;level<=7;level++){const command=FoldLevel.create(level);assert.ok(manifest.contributes.commands.some(({command:id})=>id===command.commandName));assert.ok(manifest.activationEvents.includes('onCommand:'+command.commandName));}
  assert.equal(manifest.contributes.keybindings,undefined);
+});
+
+test('level 0 invokes the same outermost code folds as level 1', async()=> {
+ await FoldLevel.create(0).executeCommand(); await FoldLevel.create(1).executeCommand();
+ assert.deepEqual(calls.filter(([id])=>id==='editor.fold'),[['editor.fold',{selectionLines:[2],levels:1,direction:'down'}],['editor.fold',{selectionLines:[2],levels:1,direction:'down'}]]);
 });

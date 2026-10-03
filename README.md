@@ -97,9 +97,9 @@ To assign the commands provided by this extension to keyboard shortcuts, follow 
 - **Command ID:** `lgd.gotToLastMethod`
 - **Description:** Move the cursor to next method in class, object, or module.
 
-### Fold Levels 1–7 (Keep Comments)
-- **Command IDs:** `lgd.foldLevel1KeepComments` through `lgd.foldLevel7KeepComments`
-- **Description:** Folds code at the selected VS Code nesting level while keeping comments and documentation open. Level 1 is outermost; higher levels fold deeper code. Assign your own shortcuts.
+### Fold Levels 0–7 (Keep Comments)
+- **Command IDs:** `lgd.foldLevel0KeepComments` through `lgd.foldLevel7KeepComments`
+- **Description:** Folds code at the selected VS Code nesting level while keeping comments and documentation open. Levels 0 and 1 both fold outermost code, including exported classes, functions, and objects; levels 2–7 match VS Code’s deeper nesting levels. Assign your own shortcuts.
 
 ## Other Extensions by Learn Game Development
 

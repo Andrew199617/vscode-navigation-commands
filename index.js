@@ -29,7 +29,7 @@ const RemoveUnusedUsings = require('./src/Commands/csharp/RemoveUnusedUsings.js'
 const OpenHeaderOrSourceBeside = require('./src/Commands/OpenHeaderOrSourceBeside.js');
 
 function activate(context) {
-    for (let level = 1; level <= 7; level++) {
+    for (let level = 0; level <= 7; level++) {
         context.subscriptions.push(FoldLevelKeepComments.create(level).createCommand());
     }
 

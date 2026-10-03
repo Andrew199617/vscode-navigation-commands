@@ -1,7 +1,7 @@
 {
   "name": "vscode-navigation-commands",
   "displayName": "Keyboard Navigation Commands",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "icon": "LGDLogo.png",
   "publisher": "learn-game-development",
   "description": "Commands that you can bind to a keyboard shortcut to help with navigating a file. For example, moving to the next or previous Paragraph, word, WORD, line, character, or more.",
@@ -31,7 +31,8 @@
     "onCommand:lgd.foldLevel4KeepComments",
     "onCommand:lgd.foldLevel5KeepComments",
     "onCommand:lgd.foldLevel6KeepComments",
-    "onCommand:lgd.foldLevel7KeepComments"
+    "onCommand:lgd.foldLevel7KeepComments",
+    "onCommand:lgd.foldLevel0KeepComments"
   ],
   "contributes": {
     "commands": [
@@ -148,6 +149,11 @@
       {
         "command": "lgd.openHeaderOrSourceBeside",
         "title": "Open Header/Source Beside (Preview)",
+        "category": "LGD"
+      },
+      {
+        "command": "lgd.foldLevel0KeepComments",
+        "title": "Fold Level 0 (Outermost, Keep Comments)",
         "category": "LGD"
       },
       {
