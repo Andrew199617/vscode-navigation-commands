@@ -183,3 +183,13 @@ for (const languageId of ['javascriptreact', 'typescriptreact']) {
   assert.deepEqual(selectCodeFolds([{start:1, end:3}], {level:1, text, languageId}), []);
  });
 }
+test('same-line nested declarations retain native sanitized level numbering', () => {
+ const text='function outer() { function inner() {\n  if (ready) {\n    work();\n  }\n  return 1;\n}\nreturn inner;\n}\n';
+ // Real VS Code returns [0,6] and [1,2]: only one folding header per line.
+ const nativeRanges=[{start:0,end:6},{start:1,end:2}];
+ assert.deepEqual(selectCodeFolds(nativeRanges,{level:2,text,languageId:'javascript'}),[1]);
+ // Defensive duplicate inputs must not create an extra, unrepresentable level.
+ const duplicated=[{start:0,end:6},{start:0,end:4},{start:1,end:2}];
+ assert.deepEqual(selectCodeFolds(duplicated,{level:2,text,languageId:'javascript'}),[1]);
+ assert.deepEqual(selectCodeFolds(duplicated,{level:3,text,languageId:'javascript'}),[]);
+});
