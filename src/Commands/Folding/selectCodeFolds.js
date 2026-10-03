@@ -13,7 +13,6 @@ function javascriptComments(text, languageId) {
       ecmaVersion: 'latest',
       sourceType: 'module',
       allowHashBang: true,
-      locations: true,
       onComment: comments
     });
     while (tokens.getToken().type.label !== 'eof') { /* Scan through the file. */ }
@@ -24,26 +23,20 @@ function javascriptComments(text, languageId) {
 }
 
 /** Prefix counts make each comment-only range check constant-time. */
-function nonCommentLineCounts(lines, comments) {
-  const spansByLine = new Map();
+function nonCommentLineCounts(text, comments) {
+  const chunks = [];
+  let offset = 0;
   for (const comment of comments) {
-    for (let line = comment.loc.start.line - 1; line < comment.loc.end.line; line++) {
-      const spans = spansByLine.get(line) || [];
-      spans.push([
-        comment.loc.start.line - 1 === line ? comment.loc.start.column : 0,
-        comment.loc.end.line - 1 === line ? comment.loc.end.column : lines[line].length
-      ]);
-      spansByLine.set(line, spans);
-    }
+    chunks.push(text.slice(offset, comment.start));
+    // Offset-based masking preserves VS Code's CR/LF line numbering. JavaScript
+    // token locations also count U+2028/U+2029 as newlines, but the editor does not.
+    chunks.push(text.slice(comment.start, comment.end).replace(/[^\r\n]/g, ''));
+    offset = comment.end;
   }
+  chunks.push(text.slice(offset));
   const counts = [0];
-  for (let line = 0; line < lines.length; line++) {
-    let uncovered = lines[line];
-    const spans = (spansByLine.get(line) || []).sort((a, b) => b[0] - a[0]);
-    for (const [start, end] of spans) {
-      uncovered = uncovered.slice(0, start) + uncovered.slice(end);
-    }
-    counts.push(counts[line] + (uncovered.trim() ? 1 : 0));
+  for (const line of chunks.join('').split(/\r\n|\r|\n/)) {
+    counts.push(counts[counts.length - 1] + (line.trim() ? 1 : 0));
   }
   return counts;
 }
@@ -54,9 +47,9 @@ function nonCommentLineCounts(lines, comments) {
  * Range kinds use VS Code's string values, avoiding a VS Code dependency in tests.
  */
 function selectCodeFolds(ranges, { level, text, languageId, blockedLines = [] }) {
-  const lines = text.split(/\r?\n/);
+  const lines = text.split(/\r\n|\r|\n/);
   const comments = javascriptComments(text, languageId);
-  const nonCommentLines = comments.length ? nonCommentLineCounts(lines, comments) : null;
+  const nonCommentLines = comments.length ? nonCommentLineCounts(text, comments) : null;
   const sorted = (ranges || []).filter(range =>
     Number.isInteger(range.start) && Number.isInteger(range.end) &&
     range.start >= 0 && range.end > range.start && range.end < lines.length

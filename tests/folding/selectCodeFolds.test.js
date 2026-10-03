@@ -57,3 +57,13 @@ test('invalid and crossing ranges do not create accidental parent folding', () =
  const input=[{start:-1,end:2},{start:1,end:3},{start:2,end:4},{start:1,end:3},{start:5,end:5},{start:9,end:999}];
  assert.deepEqual(choose(1,{languageId:'plaintext'},input),[1]);
 });
+test('CRLF and bare CR line endings keep provider line numbering', () => {
+ for (const separator of ['\r\n','\r']) {
+  const text=['/** docs',' * readable',' */','function run() {','  work();','}'].join(separator);
+  assert.deepEqual(selectCodeFolds([{start:0,end:2},{start:3,end:4}],{level:1,text,languageId:'javascript'}),[3]);
+ }
+});
+test('Unicode JavaScript line separators do not shift editor comment lines', () => {
+ const text='/** docs\u2028still same editor line\n * readable\n */\nfunction run() {\n  work();\n}\n';
+ assert.deepEqual(selectCodeFolds([{start:0,end:2},{start:3,end:4}],{level:1,text,languageId:'javascript'}),[3]);
+});
