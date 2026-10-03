@@ -11,7 +11,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:folding",
+    "test": "node --test",
     "test:folding": "node --test tests/folding/*.test.js"
   },
   "categories": [
