@@ -66,8 +66,15 @@ test('unsupported languages are explicitly disabled rather than folding untyped 
  assert.deepEqual(calls,[]);
  assert.equal(information.length,5);
 });
-test('an active selection endpoint inside a fold stays expanded',async()=> {
- editor.selections=[{start:{line:0},active:{line:3}}];
+test('normalized selection start governs exclusions regardless of active endpoint',async()=> {
+ for (const activeLine of [0,3]) {
+  calls.length=0;
+  editor.selections=[{start:{line:0},active:{line:activeLine}}];
+  await FoldLevel.create(1).executeCommand();
+  assert.deepEqual(calls.filter(([id])=>id==='editor.fold'),[['editor.fold',{selectionLines:[2],levels:1,direction:'down'}]]);
+ }
+ editor.selections=[{start:{line:3},active:{line:5}}];
+ calls.length=0;
  await FoldLevel.create(1).executeCommand();
  assert.equal(calls.length,1);
 });

@@ -32,7 +32,9 @@ const FoldLevelKeepComments = {
         level: this.level,
         text: document.getText(),
         languageId,
-        blockedLines: editor.selections.map(selection => selection.active?.line ?? selection.start.line)
+        // Native Fold Level uses normalized selection starts, not active endpoints.
+        // Keep forward/reversed selections and multiple cursors equivalent.
+        blockedLines: editor.selections.map(selection => selection.start.line)
       });
       if (!selectionLines.length) return;
       await vscode.commands.executeCommand('editor.fold', {
