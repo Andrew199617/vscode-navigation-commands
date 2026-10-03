@@ -50,13 +50,14 @@ async function main() {
             cachePath: path.join(os.tmpdir(), 'lgd-vscode-test-downloads'),
             extensionDevelopmentPath,
             extensionTestsPath: path.join(extensionDevelopmentPath, 'tests/vscode-host/index.js'),
+            // The empty extensions directory isolates third-party extensions
+            // while keeping VS Code's built-in language providers enabled.
             reuseMachineInstall: false,
             extensionTestsEnv: { ELECTRON_RUN_AS_NODE: undefined },
             launchArgs: [
                 workspace,
                 '--new-window',
                 '--disable-gpu',
-                '--disable-extensions',
                 '--user-data-dir', userData,
                 '--extensions-dir', extensions
             ]
