@@ -55,7 +55,42 @@ function visibleAfterFolding(document, providerRanges, foldStarts) {
     return visible;
 }
 
+async function setCursorStyleAndWait(editor, cursorStyle) {
+    await new Promise((resolve, reject) => {
+        const listener = vscode.window.onDidChangeTextEditorOptions(event => {
+            if (event.textEditor !== editor || event.options.cursorStyle !== cursorStyle) return;
+            clearTimeout(timer);
+            listener.dispose();
+            resolve();
+        });
+        const timer = setTimeout(() => {
+            listener.dispose();
+            reject(new Error('Timed out refreshing visibleRanges through the real editor options event'));
+        }, 15000);
+        editor.options = { cursorStyle };
+    });
+}
+
+async function refreshVisibleRanges(editor) {
+    // VS Code 1.85 computes visibleRanges excluding hidden lines, but its
+    // extension-host snapshot refreshes on selection/config/layout/scroll events,
+    // not hidden-area changes. A short fixture may fold without scrolling or
+    // resizing at all. Change only cursor rendering, wait for its acknowledged
+    // options event (which also refreshes visibleRanges), then restore it. This
+    // neither moves the selection nor changes folding, source, or indentation.
+    const original = editor.options.cursorStyle;
+    const temporary = original === vscode.TextEditorCursorStyle.Block
+        ? vscode.TextEditorCursorStyle.Line : vscode.TextEditorCursorStyle.Block;
+    try {
+        await setCursorStyleAndWait(editor, temporary);
+    } finally {
+        await setCursorStyleAndWait(editor, original);
+    }
+}
+
 async function expectVisible(fixture, expected, description) {
+    assert.deepEqual(editorState(fixture.editor).selection, fixture.selection, `${description}: moved selection`);
+    await refreshVisibleRanges(fixture.editor);
     const state = await pollUntilStable(description, () => editorState(fixture.editor), state =>
         state.active && state.visible[0] && state.visible.at(-1) &&
         state.visible.every((visible, line) => visible === expected[line]) &&
