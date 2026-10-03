@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { selectCodeFolds } = require('../../src/Commands/Folding/selectCodeFolds');
-const comment = { value: 'comment' };
+const comment = 1;
 const source = [
   '/** Module documentation', ' * Keep this visible.', ' */',
   'class Example {',

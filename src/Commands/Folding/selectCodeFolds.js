@@ -44,7 +44,8 @@ function nonCommentLineCounts(text, comments) {
 /**
  * Keep the provider's complete nesting hierarchy, then exclude comments. Removing
  * comments before calculating depth would renumber regions unlike Fold Level N.
- * Range kinds use VS Code's string values, avoiding a VS Code dependency in tests.
+ * Range kinds use VS Code's public enum values (Comment = 1), keeping this
+ * selector independent of the extension host for unit tests.
  */
 function selectCodeFolds(ranges, { level, text, languageId, blockedLines = [] }) {
   const lines = text.split(/\r\n|\r|\n/);
@@ -67,7 +68,7 @@ function selectCodeFolds(ranges, { level, text, languageId, blockedLines = [] })
     const depth = parents.length + 1;
     parents.push(range);
     if (depth !== level || blockedLines.some(line => line >= range.start && line <= range.end)) continue;
-    if (range.kind?.value === 'comment' || range.kind === 'comment') continue;
+    if (range.kind === 1 || range.kind === 'comment' || range.kind?.value === 'comment') continue;
     if (nonCommentLines && nonCommentLines[range.end + 1] === nonCommentLines[range.start]) continue;
     selected.push(range.start);
   }

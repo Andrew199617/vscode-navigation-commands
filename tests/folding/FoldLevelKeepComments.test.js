@@ -14,7 +14,7 @@ beforeEach(() => {
  editor={document:{uri:'file:///example.js',version:1,isClosed:false,languageId:'javascript',getText:()=> '/** docs\n */\nfunction run() {\n  work();\n}\n'},selections:[{start:{line:5}}]};
  vscode.window.activeTextEditor=editor;
  vscode.window.showWarningMessage=message=>warnings.push(message);
- vscode.commands.executeCommand=async (id,args)=>{calls.push([id,args]);if(id==='vscode.executeFoldingRangeProvider')return [{start:0,end:1,kind:{value:'comment'}},{start:2,end:3}];};
+ vscode.commands.executeCommand=async (id,args)=>{calls.push([id,args]);if(id==='vscode.executeFoldingRangeProvider')return [{start:0,end:1,kind:1},{start:2,end:3}];};
 });
 test('folds exact code lines idempotently without moving selection or unfolding', async()=> {
  const cmd=FoldLevel.create(1); await cmd.executeCommand(); await cmd.executeCommand();
