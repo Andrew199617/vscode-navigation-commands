@@ -97,6 +97,10 @@ To assign the commands provided by this extension to keyboard shortcuts, follow 
 - **Command ID:** `lgd.gotToLastMethod`
 - **Description:** Move the cursor to next method in class, object, or module.
 
+### Fold Levels 1–7 (Keep Comments)
+- **Command IDs:** `lgd.foldLevel1KeepComments` through `lgd.foldLevel7KeepComments`
+- **Description:** Folds code at the selected VS Code nesting level while keeping comments and documentation open. Level 1 is outermost; higher levels fold deeper code. Assign your own shortcuts.
+
 ## Other Extensions by Learn Game Development
 
 Check out other extensions made by Learn Game Development for enhancing your coding experience. Some of the popular ones include:
@@ -105,47 +109,3 @@ Check out other extensions made by Learn Game Development for enhancing your cod
 - **learn-game-development.js-snippet-extension:** Snippets to easily create classes, objects, enums and react components in javascript.
 
 For more information, search for "Learn Game Development" in extension browser.
-
-## Fold Code at a Level, Keeping Comments
-
-The new **LGD: Fold Level 1 (Keep Comments)** through **LGD: Fold Level 7
-(Keep Comments)** commands fold code at the same nesting level as VS Code's
-built-in **Fold Level 1–7**, but skip documentation and comment-only ranges.
-They are available in the Command Palette and Keyboard Shortcuts editor.
-
-- Command IDs: `lgd.foldLevel1KeepComments` through `lgd.foldLevel7KeepComments`
-- No default shortcuts are assigned. Bind any of these commands yourself; your
-  existing shortcuts and VS Code's original folding commands are unchanged.
-- Level 1 means top-level folding ranges. Level 2 means ranges immediately
-  nested within those, and so on. Levels are based on the editor's folding
-  provider, not indentation counts or a guess about what constitutes a method.
-  Classes, functions, object literals, members, nested classes, and control-flow
-  blocks remain eligible at their actual level.
-- Like VS Code's built-in level commands, a range containing a selection's start
-  line is left open. Move the cursor outside a range if you want it folded.
-- Repeating a command does not fold an enclosing class instead. Other existing
-  folds stay as they are; these commands do not unfold previously folded comments.
-- Documentation above or beside a folded body stays visible. Documentation
-  *inside* a folded class/function is hidden along with that enclosing body.
-  Use a deeper level to keep the enclosing body visible.
-- JavaScript supports both syntax and indentation folding. Real comments are
-  identified lexically when the provider does not label them, so comment-like
-  text in a string, regular expression, or template literal remains code.
-  With incomplete JavaScript, the tokenizer conservatively stops at a lexical
-  error; provider-labelled comments still work beyond it.
-- Other languages use their provider's comment labels. Untyped comment ranges
-  in other languages (including JSX/TypeScript indentation-only providers) are
-  not guessed. Manually created folding ranges are not returned by VS Code's
-  folding-provider API and are outside this command's scope.
-
-Requires VS Code 1.85 or newer. The command changes only editor folding state,
-not source text or settings.
-
-### Folding tests
-
-Run `npm ci --ignore-scripts` and `npm run test:folding` (Node 20 or newer).
-The focused tests use Node's built-in test runner and cover nesting, comments,
-JavaScript lexical edge cases, cursor exclusions, repeated commands, and editor
-changes while a provider request is pending. `npm test` runs this same suite.
-This replaces the old test entry point, which referenced missing Jest/config
-files; there were no existing checked-in tests to remove.
