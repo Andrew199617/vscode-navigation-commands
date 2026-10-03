@@ -11,8 +11,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node --test",
-    "test:folding": "node --test tests/folding/*.test.js"
+    "test": "npm run test:unit && npm run test:host",
+    "test:folding": "node --test tests/folding/*.test.js",
+    "test:unit": "node --test",
+    "test:host": "node scripts/run-vscode-tests.js"
   },
   "categories": [
     "Programming Languages",
@@ -233,6 +235,7 @@
     "@mavega/oloo": "^2.3.1"
   },
   "devDependencies": {
+    "@vscode/test-electron": "2.5.2",
     "vscode": "^1.1.34"
   }
 }
