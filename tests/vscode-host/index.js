@@ -231,6 +231,79 @@ async function sameLineDeclarations() {
     assert.equal(custom.visible[3], false, 'The actual Level-2 if body must be collapsed');
 }
 
+async function setSelectionsAndWait(fixture, selections) {
+    fixture.editor.selections = selections.map(([anchor, active]) =>
+        new vscode.Selection(anchor, 0, active, 0));
+    // Wait for a renderer acknowledgement before invoking either native or LGD
+    // commands; the API's selection setter otherwise updates its cache eagerly.
+    await refreshVisibleRanges(fixture.editor);
+    const expected = selections.map(([anchor, active]) => [anchor, 0, active, 0]);
+    await pollUntilStable('requested selections reached the real editor',
+        () => editorState(fixture.editor), state =>
+            state.active && JSON.stringify(state.selection) === JSON.stringify(expected));
+}
+
+async function observeSelectionFolding(fixture, selections, command) {
+    // Reset outside all ranges before unfolding, since a previous command may
+    // legitimately adjust a selection endpoint that it collapsed.
+    await setSelectionsAndWait(fixture, [[0, 0]]);
+    await reset(fixture);
+    await setSelectionsAndWait(fixture, selections);
+    const before = editorState(fixture.editor).selection;
+    await vscode.commands.executeCommand(command);
+    await refreshVisibleRanges(fixture.editor);
+    // Observe the real stable result without requiring the selection to remain
+    // fixed. Native folding can move an endpoint out of newly hidden lines.
+    const after = await pollUntilStable(`${command}: stable selection folding evidence`,
+        () => editorState(fixture.editor), state =>
+            state.active && state.visible[0] && state.visible.at(-1) &&
+            state.visible[4] && state.visible[17]);
+    assert.equal(fixture.document.getText(), fixture.source, `${command}: changed source`);
+    assert.equal(fixture.document.version, fixture.version, `${command}: changed document version`);
+    assert.equal(fixture.document.isDirty, false, `${command}: dirtied the document`);
+    return {
+        before,
+        after: after.selection,
+        codeVisibility: { classBody: after.visible[10], functionBody: after.visible[18] },
+        visibleRanges: after.ranges
+    };
+}
+
+async function selectionParity() {
+    const fixture = await openFixture('nested.js');
+    await providerRanges(fixture, [1, 4, 5, 8, 9, 14, 17]);
+    const selections = [
+        ['forward outside to inside', [[0, 10]], { classBody: false, functionBody: false }],
+        ['reversed inside to outside', [[10, 0]], { classBody: false, functionBody: false }],
+        ['forward between code bodies', [[8, 18]], { classBody: true, functionBody: false }],
+        ['multiple selections', [[0, 10], [18, 18]], { classBody: false, functionBody: true }]
+    ];
+    const evidence = [];
+    for (const [name, input, expectedNative] of selections) {
+        const native = await observeSelectionFolding(fixture, input, 'editor.foldLevel1');
+        const custom = await observeSelectionFolding(fixture, input, 'lgd.foldLevel1KeepComments');
+        const result = {
+            name, input,
+            normalizedStartLines: input.map(([anchor, active]) => Math.min(anchor, active)),
+            expectedNative, native, custom
+        };
+        evidence.push(result);
+        console.log(`SELECTION_PARITY ${JSON.stringify(result)}`);
+    }
+    // Collect every case before failing so CI supplies complete native evidence.
+    // Compare code bodies only: native and LGD intentionally differ on comments.
+    const mismatches = [];
+    for (const result of evidence) {
+        if (JSON.stringify(result.native.codeVisibility) !== JSON.stringify(result.expectedNative)) {
+            mismatches.push(`${result.name}: native behavior differs from normalized-start expectation`);
+        }
+        if (JSON.stringify(result.custom.codeVisibility) !== JSON.stringify(result.native.codeVisibility)) {
+            mismatches.push(`${result.name}: LGD code folding differs from the real native command`);
+        }
+    }
+    assert.deepEqual(mismatches, [], `Selection folding parity failed: ${JSON.stringify(evidence)}`);
+}
+
 exports.run = async function run() {
     const extension = vscode.extensions.getExtension('learn-game-development.vscode-navigation-commands');
     assert.ok(extension, 'The extension under development is missing from this real VS Code host');
@@ -252,6 +325,7 @@ exports.run = async function run() {
     }
     cases.push(['exports: native comparison, outermost Level 0 alias, and nested members', exportedDeclarations]);
     cases.push(['same-line declarations: actual sanitized provider nesting and idempotence', sameLineDeclarations]);
+    cases.push(['selection direction and multiple cursors: real native/custom code-folding parity', selectionParity]);
     for (const [name, test] of cases) {
         try {
             await test();
