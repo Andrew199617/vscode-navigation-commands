@@ -9,3 +9,4 @@
 - Keep PR screenshots out of the source tree. Upload them as native GitHub attachments in the PR description, grouped with concise before/after captions.
 - PR descriptions explain behavior and show images; do not put test-pass counts or verification-status sections there. Test status belongs in GitHub Actions.
 - Run every project test on both push and pull_request in GitHub Actions. Keep npm test as the complete suite, including newly added tests; do not weaken checks to hide failures.
+- Prefer behavior and runtime-contract tests. Avoid manifest/lockfile equality tests that duplicate npm ci, and avoid repeating coverage already supplied by activation or module-loading tests; test metadata only when it protects a distinct meaningful contract.
