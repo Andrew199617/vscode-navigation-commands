@@ -27,7 +27,7 @@ const FoldLevelKeepComments = {
         level: this.level,
         text: document.getText(),
         languageId: document.languageId,
-        blockedLines: editor.selections.map(selection => selection.start.line)
+        blockedLines: editor.selections.map(selection => selection.active?.line ?? selection.start.line)
       });
       if (!selectionLines.length) return;
       await vscode.commands.executeCommand('editor.fold', {
